@@ -272,41 +272,19 @@
       margin-bottom: 18px;
     }
 
-    /* ===== חתימת העיצוב: "מד חשיפה" לפני⟷אחרי ===== */
+    /* ===== כיתוב תחתון: תיוג החדר (מבטא פליז) — בלי פרוגרס ===== */
     .stage__foot {
       position: absolute;
       inset-inline: 22px;
-      bottom: calc(22px + env(safe-area-inset-bottom));
+      bottom: calc(24px + env(safe-area-inset-bottom));
       z-index: 3;
     }
-    .meter {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      margin-bottom: 12px;
+    .stage__spec {
+      display: inline-flex; align-items: center; gap: 10px;
+      color: var(--plaster); letter-spacing: 0.16em; font-size: 0.74rem;
+      text-shadow: 0 2px 14px rgba(0,0,0,0.5);
     }
-    .meter__pole { color: var(--plaster); font-family: var(--mono); font-size: 0.72rem; letter-spacing: 0.1em; opacity: 0.85; white-space: nowrap; }
-    .meter__track {
-      position: relative;
-      flex: 1;
-      height: 2px;
-      background: rgba(231,222,208,0.22);
-    }
-    .meter__fill {
-      position: absolute; inset: 0 0 0 auto; /* עוגן לימין (צד "לפני" ב-RTL) */
-      width: 100%;
-      transform: scaleX(0);
-      transform-origin: right center;
-      background: var(--brass);
-    }
-    .meter__dot {
-      position: absolute; top: 50%; right: 0;
-      width: 10px; height: 10px; border-radius: 50%;
-      background: var(--brass);
-      transform: translate(50%, -50%);
-      box-shadow: 0 0 0 4px rgba(201,162,75,0.22);
-    }
-    .stage__spec { color: var(--sand); letter-spacing: 0.06em; font-size: 0.82rem; }
+    .spec-tick { width: 22px; height: 1px; background: var(--brass); display: inline-block; flex: none; }
 
     /* =================================================================
        5. Fallback — prefers-reduced-motion: "לפני | אחרי" סטטי
@@ -516,6 +494,7 @@
         id: "living", index: "02", name: "סלון",
         keyword: "אור שנכנס", spec: "אוויר · מרקם · שקט",
         // TODO: SWAP PLACEHOLDER — CHAPTERS[1].frames (סלון).
+        // כשיהיה וידאו:  frames: sequence("living", 30)
         frames: [
           roomPhoto("photo-1586023492125-27b2c045efd7", "before"),
           roomPhoto("photo-1586023492125-27b2c045efd7", "after")
@@ -525,6 +504,7 @@
         id: "bedroom", index: "03", name: "חדר שינה",
         keyword: "שקט חדש", spec: "רכות · צל · רוגע",
         // TODO: SWAP PLACEHOLDER — CHAPTERS[2].frames (חדר שינה).
+        // כשיהיה וידאו:  frames: sequence("bedroom", 30)
         frames: [
           roomPhoto("photo-1505693416388-ac5ce068fe85", "before"),
           roomPhoto("photo-1505693416388-ac5ce068fe85", "after")
@@ -534,6 +514,7 @@
         id: "bathroom", index: "04", name: "חדר רחצה",
         keyword: "נקי ומרגיע", spec: "אבן · אור · רעננות",
         // TODO: SWAP PLACEHOLDER — CHAPTERS[3].frames (חדר רחצה).
+        // כשיהיה וידאו:  frames: sequence("bathroom", 30)
         frames: [
           roomPhoto("photo-1620626011761-996317b8d101", "before"),
           roomPhoto("photo-1620626011761-996317b8d101", "after")
@@ -586,7 +567,8 @@
         ch.frames.forEach(function (src) {
           var f = document.createElement("div");
           f.className = "frame";
-          f.style.backgroundImage = 'url("' + src + '")';
+          // טעינה עצלה: שומרים את המקור ומחילים כשהפרק מתקרב (חשוב לרצף 30+ פריימים)
+          f.setAttribute("data-src", src);
           f.setAttribute("aria-hidden", "true");
           framesWrap.appendChild(f);
           frameEls.push(f);
@@ -599,7 +581,7 @@
         var top = document.createElement("div");
         top.className = "stage__top";
         top.innerHTML =
-          '<span class="stage__index mono">' + ch.index + ' / ' + escapeXml(ch.name) + '</span>' +
+          '<span class="stage__index mono">' + ch.index + ' / 04</span>' +
           '<span class="stage__room">' + escapeXml(ch.name) + '</span>';
 
         // מילת המפתח
@@ -611,12 +593,7 @@
         var foot = document.createElement("div");
         foot.className = "stage__foot";
         foot.innerHTML =
-          '<div class="meter">' +
-            '<span class="meter__pole">לפני</span>' +
-            '<div class="meter__track"><span class="meter__fill"></span><span class="meter__dot"></span></div>' +
-            '<span class="meter__pole">אחרי</span>' +
-          '</div>' +
-          '<div class="stage__spec mono">' + escapeXml(ch.spec) + '</div>';
+          '<span class="stage__spec mono"><span class="spec-tick"></span>' + escapeXml(ch.spec) + '</span>';
 
         stage.appendChild(framesWrap);
         stage.appendChild(scrim);
@@ -632,9 +609,7 @@
           // Ken Burns פעיל רק בזוג תמונות; ברצף אמיתי (>2) התנועה כבר בפריימים
           kenBurns: frameEls.length <= 2,
           keywordEl: keyword,
-          meterFill: foot.querySelector(".meter__fill"),
-          meterDot: foot.querySelector(".meter__dot"),
-          active: false
+          active: false, loaded: false
         });
       });
     }
@@ -682,9 +657,19 @@
       item.keywordEl.style.opacity = kop;
       item.keywordEl.style.transform = "translateY(calc(-50% + " + ((1 - kop) * 16) + "px))";
 
-      // מד החשיפה (חתימת העיצוב)
-      if (item.meterFill) item.meterFill.style.transform = "scaleX(" + p + ")";
-      if (item.meterDot)  item.meterDot.style.right = (p * 100) + "%";
+    }
+
+    /* ---------- 6b. טעינה עצלה של פריימים (פעם אחת לכל פרק) ----------
+       מחיל את התמונות רק כשהפרק קרוב למסך => עמוד קל בטעינה גם עם 30+
+       פריימים לכל חדר (הרצף האמיתי). מגדיל preload מסך אחד קדימה. */
+    function loadFrames(item) {
+      if (item.loaded) return;
+      item.loaded = true;
+      for (var i = 0; i < item.frameEls.length; i++) {
+        var f = item.frameEls[i];
+        var src = f.getAttribute("data-src");
+        if (src) f.style.backgroundImage = 'url("' + src + '")';
+      }
     }
 
     /* ---------- 7. לולאת עדכון: scroll -> rAF ---------- */
@@ -702,7 +687,11 @@
       var io = new IntersectionObserver(function (entries) {
         entries.forEach(function (entry) {
           for (var i = 0; i < stages.length; i++) {
-            if (stages[i].section === entry.target) { stages[i].active = entry.isIntersecting; break; }
+            if (stages[i].section === entry.target) {
+              stages[i].active = entry.isIntersecting;
+              if (entry.isIntersecting) loadFrames(stages[i]); // preload מסך קדימה
+              break;
+            }
           }
         });
         requestUpdate();
@@ -716,6 +705,8 @@
       if (prefersReducedMotion) { buildStatic(); return; }
       buildScrub();
       observeStages();
+      // מסך ראשון מיידי: טוענים ומפעילים את הפרק הראשון בלי לחכות ל-observer
+      if (stages[0]) { loadFrames(stages[0]); stages[0].active = true; }
       window.addEventListener("scroll", requestUpdate, { passive: true });
       window.addEventListener("resize", requestUpdate, { passive: true });
       requestUpdate(); // רינדור ראשוני

@@ -1,2 +1,9 @@
 # local preview / editor config — not needed for hosting
 .claude/
+
+# source videos — heavy, and NOT needed on the live site.
+# only the extracted frames (frames/<room>/) are served by GitHub Pages.
+videos/*.mp4
+videos/*.mov
+videos/*.webm
+videos/*.m4v
