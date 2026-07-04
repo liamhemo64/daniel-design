@@ -209,7 +209,8 @@
       overflow: hidden;
       background: var(--espresso);
     }
-    .frames { position: absolute; inset: 0; }
+    /* מכל השכבות — עם זום בסיס לתנועת Ken Burns (נשלט ב-JS) */
+    .frames { position: absolute; inset: 0; transform: scale(1.12); will-change: transform; }
     .frame {
       position: absolute;
       inset: 0;
@@ -478,6 +479,23 @@
       return phase === "before" ? base + "&sat=-100&bri=-12" : base;
     }
 
+    /* ---------- 1c. רצף פריימים אמיתי מווידאו (Image Sequence) ----------
+       זה ה"סגנון של הריל": וידאו AI שפורק לפריימים וגוללים דרכו.
+       השתמשו כך במקום זוג roomPhoto (ראו דוגמה מוערת ב-CHAPTERS):
+           frames: sequence("kitchen", 30)
+       בונה: ["frames/kitchen/frame-001.jpg", ..., "frame-030.jpg"].
+       מפיקים את הפריימים עם הסקריפט scripts/extract-frames (ffmpeg) —
+       ראו README.md. כשהמערך גדול מ-2, אפקט ה-Ken Burns נכבה אוטומטית
+       (התנועה כבר בתוך הפריימים). // TODO: SWAP PLACEHOLDER */
+    function sequence(room, count, ext) {
+      ext = ext || "jpg";
+      var arr = [];
+      for (var i = 1; i <= count; i++) {
+        arr.push("frames/" + room + "/frame-" + String(i).padStart(3, "0") + "." + ext);
+      }
+      return arr;
+    }
+
     /* ---------- 2. נתוני הפרקים ----------
        כל פרק מחזיק מערך `frames` (לא שתי תמונות קבועות). המנגנון גנרי:
        2 פריימים = קרוספייד לפני→אחרי; 20–40 פריימים = רצף וידאו חלק.
@@ -486,7 +504,9 @@
       {
         id: "kitchen", index: "01", name: "מטבח",
         keyword: "מרחב שנפתח", spec: "אור · חום · זרימה",
-        // TODO: SWAP PLACEHOLDER — CHAPTERS[0].frames (מטבח). עתיד: 20–40 פריימים.
+        // TODO: SWAP PLACEHOLDER — CHAPTERS[0].frames (מטבח).
+        // כשיהיה וידאו AI: מחליפים את השורות למטה בשורה אחת (רצף אמיתי):
+        //   frames: sequence("kitchen", 30)
         frames: [
           roomPhoto("photo-1556909114-f6e7ad7d3136", "before"),
           roomPhoto("photo-1556909114-f6e7ad7d3136", "after")
@@ -550,7 +570,7 @@
     /* ---------- 4b. בנייה עם scroll-scrubbing ---------- */
     var stages = [];
     function buildScrub() {
-      CHAPTERS.forEach(function (ch) {
+      CHAPTERS.forEach(function (ch, idx) {
         var section = document.createElement("section");
         section.className = "chapter";
         section.id = "chapter-" + ch.id;
@@ -608,6 +628,9 @@
 
         stages.push({
           section: section, stage: stage, frameEls: frameEls,
+          framesWrap: framesWrap, idx: idx,
+          // Ken Burns פעיל רק בזוג תמונות; ברצף אמיתי (>2) התנועה כבר בפריימים
+          kenBurns: frameEls.length <= 2,
           keywordEl: keyword,
           meterFill: foot.querySelector(".meter__fill"),
           meterDot: foot.querySelector(".meter__dot"),
@@ -643,6 +666,16 @@
         if (i === lower) op = 1;
         else if (i === upper) op = frac;
         item.frameEls[i].style.opacity = op;
+      }
+
+      // תנועת Ken Burns — זום + pan עדין לפי הגלילה (תחושת וידאו)
+      if (item.kenBurns && item.framesWrap) {
+        var s = 1.12 + p * 0.05;                       // 1.12 -> 1.17 (זום פנימה)
+        var dir = item.idx % 2 === 0 ? 1 : -1;         // כיוון מתחלף בין פרקים
+        var px = (0.5 - p) * 4 * dir;                  // ±2% pan אופקי
+        var py = (0.5 - p) * 2;                        // ±1% pan אנכי
+        item.framesWrap.style.transform =
+          "scale(" + s + ") translate(" + px + "%," + py + "%)";
       }
 
       var kop = keywordOpacity(p);
