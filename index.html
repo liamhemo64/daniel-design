@@ -1,0 +1,699 @@
+<!DOCTYPE html>
+<!--
+  =====================================================================
+  סטודיו דניאל — דף נחיתה Scrollytelling (לפני / אחרי)
+  קונספט עיצובי: "מונוגרפיה בשעת בין ערביים" — חם, כהה, עריכתי.
+  ---------------------------------------------------------------------
+  קובץ בודד: HTML + CSS + JS inline. ללא build, ללא framework.
+  מוכן להעלאה כמו שהוא לכל אחסון סטטי (Netlify / Vercel / GitHub Pages).
+  להחלפת תמונות אמיתיות: חפשו "// TODO: SWAP PLACEHOLDER".
+  =====================================================================
+-->
+<html lang="he" dir="rtl">
+<head>
+  <meta charset="utf-8" />
+  <!-- Mobile-first: עוצב תחילה ל-375px (לינק בביו של אינסטגרם) -->
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="theme-color" content="#241C15" />
+  <title>סטודיו דניאל — עיצוב פנים | כל חדר, מסופר מחדש</title>
+  <meta name="description" content="סטודיו דניאל — עיצוב פנים. גללו וראו איך אור וחומר משנים חלל: טרנספורמציה של מטבח, סלון, חדר שינה וחדר רחצה, מ׳לפני׳ ל׳אחרי׳." />
+
+  <!-- ===== גופנים ===== -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Assistant:wght@300;400;600;700&family=Frank+Ruhl+Libre:wght@500;700;900&family=Space+Mono:wght@400;700&display=swap"
+    rel="stylesheet"
+  />
+
+  <style>
+    /* =================================================================
+       1. Design Tokens — פלטה חמה-כהה, עריכתית
+       ================================================================= */
+    :root {
+      --espresso:   #241C15;  /* רקע ראשי — כמעט-שחור חמים */
+      --espresso-2: #2E241B;  /* גוון מעט בהיר יותר */
+      --plaster:    #E7DED0;  /* טקסט ראשי — טיח חמים */
+      --brass:      #C9A24B;  /* מבטא — פליז */
+      --brass-soft: #D8B978;  /* פליז בהיר (hover) */
+      --sand:       #B8A98F;  /* נייטרל חמים לטקסט משני */
+      --olive:      #6E6A54;  /* ירוק-זית מעושן */
+      --line:       rgba(231,222,208,0.16); /* קווי הפרדה דקים */
+
+      /* גובה "במה" מוצמדת */
+      --stage-h: 100vh;
+
+      /* גופנים */
+      --display: "Frank Ruhl Libre", "David Libre", Georgia, serif;
+      --body:    "Assistant", "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+      --mono:    "Space Mono", "SFMono-Regular", ui-monospace, Menlo, Consolas, monospace;
+    }
+    @supports (height: 100svh) { :root { --stage-h: 100svh; } }
+
+    /* =================================================================
+       2. איפוס + בסיס
+       ================================================================= */
+    *, *::before, *::after { box-sizing: border-box; }
+    html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
+    body {
+      margin: 0;
+      background: var(--espresso);
+      color: var(--plaster);
+      font-family: var(--body);
+      font-weight: 400;
+      line-height: 1.65;
+      overflow-x: hidden;
+      -webkit-font-smoothing: antialiased;
+    }
+    img { display: block; max-width: 100%; }
+    a { color: inherit; }
+    ::selection { background: var(--brass); color: var(--espresso); }
+
+    /* מיקרו-כותרת מונו (שכבת "אנוטציה" אדריכלית) */
+    .mono {
+      font-family: var(--mono);
+      font-size: 0.72rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+    }
+
+    /* גרעין עדין על כל הדף — חום ומרקם */
+    body::after {
+      content: "";
+      position: fixed;
+      inset: 0;
+      z-index: 9;
+      pointer-events: none;
+      opacity: 0.05;
+      mix-blend-mode: overlay;
+      background-image: url("data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20width='160'%20height='160'%3E%3Cfilter%20id='n'%3E%3CfeTurbulence%20type='fractalNoise'%20baseFrequency='0.85'%20numOctaves='2'/%3E%3C/filter%3E%3Crect%20width='100%25'%20height='100%25'%20filter='url(%23n)'/%3E%3C/svg%3E");
+    }
+
+    /* מיקוד נגיש */
+    a:focus-visible, .btn:focus-visible {
+      outline: 2px solid var(--brass);
+      outline-offset: 3px;
+      border-radius: 2px;
+    }
+
+    /* =================================================================
+       3. Hero — פתיח עריכתי, מיושר להתחלה (ימין ב-RTL), עוגן תחתון
+       ================================================================= */
+    .hero {
+      position: relative;
+      min-height: var(--stage-h);
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      padding: 28px 22px calc(26px + env(safe-area-inset-bottom));
+      overflow: hidden;
+      background:
+        radial-gradient(130% 100% at 88% 8%, rgba(201,162,75,0.18), transparent 46%),
+        radial-gradient(120% 90% at 6% 100%, rgba(110,106,84,0.20), transparent 55%),
+        var(--espresso);
+    }
+    /* הילה חמה מפושטת ברקע */
+    .hero::before {
+      content: "";
+      position: absolute;
+      inset: -25% -20% auto auto;
+      width: 78vw; height: 78vw; max-width: 520px; max-height: 520px;
+      background: radial-gradient(circle, rgba(201,162,75,0.16), transparent 70%);
+      border-radius: 50%;
+      pointer-events: none;
+    }
+    .hero__eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 9px;
+      color: var(--brass);
+      margin: 0 0 22px;
+    }
+    .hero__eyebrow .tick { width: 26px; height: 1px; background: var(--brass); display: inline-block; }
+    .hero__title {
+      font-family: var(--display);
+      font-weight: 900;
+      font-size: clamp(3rem, 15vw, 6.5rem);
+      line-height: 0.98;
+      letter-spacing: -0.01em;
+      margin: 0 0 22px;
+      color: var(--plaster);
+    }
+    .hero__title em {
+      font-style: normal;
+      color: var(--brass);
+    }
+    .hero__subtitle {
+      font-size: clamp(1.02rem, 4.4vw, 1.3rem);
+      color: var(--sand);
+      max-width: 34ch;
+      margin: 0 0 34px;
+    }
+
+    /* כפתור — קו פליז, מילוי בריחוף */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+      padding: 15px 30px;
+      font-family: var(--body);
+      font-size: 1.02rem;
+      font-weight: 700;
+      color: var(--plaster);
+      background: transparent;
+      border: 1px solid var(--brass);
+      border-radius: 2px;
+      text-decoration: none;
+      cursor: pointer;
+      transition: background-color .3s ease, color .3s ease, transform .2s ease;
+    }
+    .btn:hover { background: var(--brass); color: var(--espresso); }
+    .btn:active { transform: translateY(1px); }
+    .btn--solid { background: var(--brass); color: var(--espresso); border-color: var(--brass); }
+    .btn--solid:hover { background: var(--brass-soft); border-color: var(--brass-soft); }
+
+    /* פס תחתון של ה-Hero — אנוטציה + הפרדה */
+    .hero__foot {
+      margin-top: 30px;
+      padding-top: 16px;
+      border-top: 1px solid var(--line);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      color: var(--sand);
+    }
+    .hero__foot .cue { color: var(--brass); animation: bob 1.9s ease-in-out infinite; }
+    @keyframes bob { 0%,100% { transform: translateY(0); opacity: .7; } 50% { transform: translateY(6px); opacity: 1; } }
+
+    /* אנימציית טעינה — עלייה מדורגת */
+    .reveal { opacity: 0; transform: translateY(22px); animation: rise .9s cubic-bezier(.2,.7,.2,1) forwards; }
+    .reveal.d1 { animation-delay: .05s; }
+    .reveal.d2 { animation-delay: .18s; }
+    .reveal.d3 { animation-delay: .31s; }
+    .reveal.d4 { animation-delay: .44s; }
+    .reveal.d5 { animation-delay: .57s; }
+    @keyframes rise { to { opacity: 1; transform: none; } }
+
+    /* =================================================================
+       4. פרק (Chapter) — מנגנון scroll-scrubbing
+       ================================================================= */
+    .chapter {
+      position: relative;
+      height: calc(var(--stage-h) * 3); /* פי 3 => מרחק הצמדה של פי 2 */
+    }
+    .stage {
+      position: sticky;
+      top: 0;
+      height: var(--stage-h);
+      overflow: hidden;
+      background: var(--espresso);
+    }
+    .frames { position: absolute; inset: 0; }
+    .frame {
+      position: absolute;
+      inset: 0;
+      background-position: center;
+      background-size: cover;
+      background-repeat: no-repeat;
+      will-change: opacity;   /* אנימציה על opacity בלבד */
+      opacity: 0;
+    }
+    /* ויניאט + הכהיה בקצוות לקריאוּת הטקסט */
+    .stage__scrim {
+      position: absolute; inset: 0; pointer-events: none;
+      background:
+        linear-gradient(180deg, rgba(36,28,21,0.72) 0%, rgba(36,28,21,0) 24%, rgba(36,28,21,0) 52%, rgba(36,28,21,0.86) 100%),
+        radial-gradient(120% 80% at 50% 40%, transparent 55%, rgba(36,28,21,0.4) 100%);
+    }
+
+    /* שורת ראש הפרק: אינדקס מונו + שם החדר */
+    .stage__top {
+      position: absolute;
+      top: calc(22px + env(safe-area-inset-top));
+      inset-inline: 22px;
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      gap: 12px;
+      z-index: 3;
+    }
+    .stage__index { color: var(--brass); }
+    .stage__room {
+      font-family: var(--display);
+      font-weight: 700;
+      font-size: clamp(1.5rem, 6.4vw, 2.4rem);
+      color: var(--plaster);
+      text-shadow: 0 2px 18px rgba(0,0,0,0.45);
+    }
+
+    /* מילת המפתח — פייד בשליש האמצעי (נשלט ב-JS) */
+    .stage__keyword {
+      position: absolute;
+      inset-inline: 24px;
+      top: 50%;
+      transform: translateY(-50%);
+      margin: 0;
+      font-family: var(--display);
+      font-weight: 900;
+      font-size: clamp(2.6rem, 13vw, 5.5rem);
+      line-height: 1.02;
+      color: var(--plaster);
+      text-shadow: 0 6px 30px rgba(0,0,0,0.55);
+      opacity: 0;
+      z-index: 2;
+    }
+    .stage__keyword::before {
+      content: "";
+      display: block;
+      width: 40px; height: 3px;
+      background: var(--brass);
+      margin-bottom: 18px;
+    }
+
+    /* ===== חתימת העיצוב: "מד חשיפה" לפני⟷אחרי ===== */
+    .stage__foot {
+      position: absolute;
+      inset-inline: 22px;
+      bottom: calc(22px + env(safe-area-inset-bottom));
+      z-index: 3;
+    }
+    .meter {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 12px;
+    }
+    .meter__pole { color: var(--plaster); font-family: var(--mono); font-size: 0.72rem; letter-spacing: 0.1em; opacity: 0.85; white-space: nowrap; }
+    .meter__track {
+      position: relative;
+      flex: 1;
+      height: 2px;
+      background: rgba(231,222,208,0.22);
+    }
+    .meter__fill {
+      position: absolute; inset: 0 0 0 auto; /* עוגן לימין (צד "לפני" ב-RTL) */
+      width: 100%;
+      transform: scaleX(0);
+      transform-origin: right center;
+      background: var(--brass);
+    }
+    .meter__dot {
+      position: absolute; top: 50%; right: 0;
+      width: 10px; height: 10px; border-radius: 50%;
+      background: var(--brass);
+      transform: translate(50%, -50%);
+      box-shadow: 0 0 0 4px rgba(201,162,75,0.22);
+    }
+    .stage__spec { color: var(--sand); letter-spacing: 0.06em; font-size: 0.82rem; }
+
+    /* =================================================================
+       5. Fallback — prefers-reduced-motion: "לפני | אחרי" סטטי
+       ================================================================= */
+    .static-chapter { padding: 46px 20px; border-bottom: 1px solid var(--line); }
+    .static-chapter__head {
+      display: flex; align-items: baseline; gap: 12px;
+      max-width: 1100px; margin: 0 auto 18px;
+    }
+    .static-chapter__index { color: var(--brass); }
+    .static-chapter__name {
+      font-family: var(--display); font-weight: 700;
+      font-size: clamp(1.7rem, 7vw, 2.6rem); margin: 0;
+    }
+    .static-chapter__kw { color: var(--sand); margin-inline-start: auto; }
+    .static-pair {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 12px;
+      max-width: 1100px; margin: 0 auto;
+    }
+    .static-figure { margin: 0; }
+    .static-figure img {
+      width: 100%; aspect-ratio: 2/3; object-fit: cover;
+      border-radius: 3px; border: 1px solid var(--line);
+    }
+    .static-figure figcaption { margin-top: 8px; text-align: center; color: var(--sand); font-family: var(--mono); font-size: 0.72rem; letter-spacing: 0.12em; }
+    @media (max-width: 420px) { .static-pair { grid-template-columns: 1fr; } }
+
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+      .stage { position: static; height: auto; }
+      .hero__foot .cue, .reveal { animation: none; }
+      .reveal { opacity: 1; transform: none; }
+    }
+
+    /* =================================================================
+       6. CTA + Footer
+       ================================================================= */
+    .cta {
+      position: relative;
+      padding: 92px 22px 40px;
+      background:
+        radial-gradient(120% 90% at 82% 0%, rgba(201,162,75,0.14), transparent 52%),
+        var(--espresso-2);
+      border-top: 1px solid var(--line);
+    }
+    .cta__eyebrow { color: var(--brass); margin: 0 0 18px; }
+    .cta__title {
+      font-family: var(--display); font-weight: 900;
+      font-size: clamp(2.2rem, 9.5vw, 3.8rem); line-height: 1.02;
+      margin: 0 0 16px; max-width: 16ch;
+    }
+    .cta__text { color: var(--sand); font-size: clamp(1rem, 4.4vw, 1.18rem); max-width: 42ch; margin: 0 0 32px; }
+    .site-footer {
+      padding: 26px 22px calc(30px + env(safe-area-inset-bottom));
+      display: flex; align-items: center; justify-content: space-between; gap: 12px;
+      color: var(--sand); border-top: 1px solid var(--line); background: var(--espresso);
+    }
+
+    /* =================================================================
+       7. הרחבה לדסקטופ (mobile-first — כאן רק מרחיבים)
+       ================================================================= */
+    @media (min-width: 768px) {
+      .hero { padding: 48px; }
+      .hero__subtitle { font-size: 1.35rem; }
+      .stage__top { top: 34px; inset-inline: 40px; }
+      .stage__foot { inset-inline: 40px; bottom: 34px; }
+      .stage__keyword { inset-inline: 40px; }
+    }
+    @media (min-width: 1000px) {
+      .hero { padding: 64px; }
+      .hero__title { font-size: clamp(5rem, 9vw, 8rem); }
+      .hero__subtitle { max-width: 40ch; }
+    }
+
+    .noscript { padding: 18px; text-align: center; background: var(--brass); color: var(--espresso); }
+  </style>
+</head>
+<body>
+
+  <!-- ================= Hero ================= -->
+  <header class="hero">
+    <!-- TODO: SWAP PLACEHOLDER — שם העסק (מופיע כאן, ב-<title> וב-footer) -->
+    <p class="hero__eyebrow mono reveal d1"><span class="tick"></span> STUDIO DANIEL · עיצוב פנים</p>
+    <h1 class="hero__title reveal d2">כל חדר,<br /><em>מסופר מחדש.</em></h1>
+    <p class="hero__subtitle reveal d3">גללו וראו איך אור וחומר משנים חלל — מ׳לפני׳ ל׳אחרי׳, בתנועה אחת.</p>
+    <div class="reveal d4">
+      <a class="btn" href="#chapter-kitchen">לסיור בין החדרים ↓</a>
+    </div>
+
+    <div class="hero__foot mono reveal d5">
+      <span>04 חדרים · לפני / אחרי</span>
+      <span class="cue" aria-hidden="true">↓ גללו</span>
+    </div>
+  </header>
+
+  <noscript>
+    <p class="noscript">להצגת אפקט הטרנספורמציה יש לאפשר JavaScript בדפדפן.</p>
+  </noscript>
+
+  <!-- ================= הפרקים מוזרקים לכאן ע"י JS ================= -->
+  <main id="chapters"></main>
+
+  <!-- ================= CTA ================= -->
+  <section class="cta">
+    <p class="cta__eyebrow mono">— הפרק הבא</p>
+    <h2 class="cta__title">מוכנים לכתוב מחדש את הבית שלכם?</h2>
+    <p class="cta__text">נתחיל בשיחה קצרה על החדר שהכי מציק לכם. בלי התחייבות, בלי לחץ.</p>
+    <!--
+      TODO: SWAP PLACEHOLDER — מספר WhatsApp אמיתי.
+      פורמט: קידומת בינ"ל בלי + וללא 0 מוביל. דוגמה לישראל: 972501234567
+    -->
+    <a
+      class="btn btn--solid"
+      href="https://wa.me/972500000000?text=%D7%94%D7%99%D7%99%20%D7%93%D7%A0%D7%99%D7%90%D7%9C%2C%20%D7%A8%D7%90%D7%99%D7%AA%D7%99%20%D7%90%D7%AA%20%D7%94%D7%93%D7%A3%20%D7%95%D7%90%D7%A9%D7%9E%D7%97%20%D7%9C%D7%A9%D7%9E%D7%95%D7%A2%20%D7%A2%D7%95%D7%93"
+      target="_blank" rel="noopener"
+    >
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+        <path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.75.46 3.45 1.32 4.95L2 22l5.25-1.38a9.9 9.9 0 0 0 4.79 1.22h.01c5.46 0 9.91-4.45 9.91-9.91C21.96 6.45 17.5 2 12.04 2zm0 18.02h-.01a8.2 8.2 0 0 1-4.19-1.15l-.3-.18-3.11.82.83-3.03-.2-.31a8.13 8.13 0 0 1-1.25-4.35c0-4.54 3.7-8.24 8.24-8.24 2.2 0 4.27.86 5.82 2.42a8.18 8.18 0 0 1 2.41 5.83c0 4.54-3.69 8.24-8.24 8.24zm4.52-6.16c-.25-.12-1.47-.72-1.69-.81-.23-.08-.39-.12-.56.13-.16.25-.64.81-.79.97-.14.17-.29.19-.54.06-.25-.12-1.05-.39-1.99-1.23-.74-.66-1.23-1.47-1.38-1.72-.14-.25-.02-.38.11-.51.11-.11.25-.29.37-.43.13-.14.17-.25.25-.41.08-.17.04-.31-.02-.43-.06-.12-.56-1.34-.76-1.84-.2-.48-.4-.42-.56-.43-.14-.01-.31-.01-.48-.01-.17 0-.43.06-.66.31-.23.25-.86.85-.86 2.07 0 1.22.89 2.4 1.01 2.56.12.17 1.75 2.67 4.25 3.74.59.26 1.06.41 1.42.53.6.19 1.14.16 1.57.1.48-.07 1.47-.6 1.68-1.18.21-.58.21-1.07.14-1.18-.06-.11-.22-.17-.47-.29z"/>
+      </svg>
+      שיחה ב-WhatsApp
+    </a>
+  </section>
+
+  <footer class="site-footer mono">
+    <!-- TODO: SWAP PLACEHOLDER — קרדיט/יצירת קשר סופיים -->
+    <span>STUDIO DANIEL · עיצוב פנים</span>
+    <span>EST. <span id="year"></span></span>
+  </footer>
+
+  <script>
+  /* ===================================================================
+     JavaScript — כל הלוגיקה (vanilla, ללא תלויות)
+     =================================================================== */
+  (function () {
+    "use strict";
+
+    /* ---------- 0. עזרי בסיס ---------- */
+    function clamp(v, min, max) { return v < min ? min : (v > max ? max : v); }
+    function escapeXml(s) {
+      return String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;")
+                      .replace(/"/g,"&quot;").replace(/'/g,"&apos;");
+    }
+
+    /* ---------- 1. Fallback: מחולל placeholder (SVG) — נשמר לשעת חירום ----------
+       אם תרצו לחזור ל-placeholders במקום תמונות אמיתיות, השתמשו בפונקציה
+       הזו במערך frames במקום roomPhoto. // TODO: SWAP PLACEHOLDER */
+    function makePlaceholder(roomName, phase, colorA, colorB) {
+      var isBefore = phase === "before";
+      var label = (isBefore ? "לפני" : "אחרי") + " – " + roomName;
+      var svg =
+        '<svg xmlns="http://www.w3.org/2000/svg" width="800" height="1200" viewBox="0 0 800 1200" direction="rtl">' +
+          '<defs><linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">' +
+          '<stop offset="0" stop-color="'+colorA+'"/><stop offset="1" stop-color="'+colorB+'"/>' +
+          '</linearGradient></defs>' +
+          '<rect width="800" height="1200" fill="url(#bg)"/>' +
+          '<text x="400" y="600" text-anchor="middle" font-family="Arial" font-size="76" font-weight="700" fill="#fff">'+escapeXml(label)+'</text>' +
+          '<text x="400" y="1140" text-anchor="middle" font-family="Arial" font-size="26" fill="#fff" opacity="0.55">// TODO: SWAP PLACEHOLDER</text>' +
+        '</svg>';
+      return "data:image/svg+xml;charset=utf-8," + encodeURIComponent(svg);
+    }
+
+    /* ---------- 1b. תמונת חדר אמיתית (Unsplash) — "לפני"/"אחרי" ----------
+       "before" = אותה תמונה, מנוטרלת צבע ומעומעמת (מראה מיושן/דהוי);
+       "after"  = צבע מלא וחי. הקרוספייד מדגים "שדרוג" של אותו חדר.
+       *** TODO: SWAP PLACEHOLDER *** — החליפו מזהי תמונות ב-CHAPTERS,
+       או הציבו כתובות משלכם ישירות במערך frames. */
+    var UNSPLASH = "https://images.unsplash.com/";
+    function roomPhoto(photoId, phase) {
+      var base = UNSPLASH + photoId + "?auto=format&fit=crop&w=1080&h=1620&q=72";
+      return phase === "before" ? base + "&sat=-100&bri=-12" : base;
+    }
+
+    /* ---------- 2. נתוני הפרקים ----------
+       כל פרק מחזיק מערך `frames` (לא שתי תמונות קבועות). המנגנון גנרי:
+       2 פריימים = קרוספייד לפני→אחרי; 20–40 פריימים = רצף וידאו חלק.
+       *** רק מאריכים/מחליפים את frames — אפס שינוי לוגיקה. *** */
+    var CHAPTERS = [
+      {
+        id: "kitchen", index: "01", name: "מטבח",
+        keyword: "מרחב שנפתח", spec: "אור · חום · זרימה",
+        // TODO: SWAP PLACEHOLDER — CHAPTERS[0].frames (מטבח). עתיד: 20–40 פריימים.
+        frames: [
+          roomPhoto("photo-1556909114-f6e7ad7d3136", "before"),
+          roomPhoto("photo-1556909114-f6e7ad7d3136", "after")
+        ]
+      },
+      {
+        id: "living", index: "02", name: "סלון",
+        keyword: "אור שנכנס", spec: "אוויר · מרקם · שקט",
+        // TODO: SWAP PLACEHOLDER — CHAPTERS[1].frames (סלון).
+        frames: [
+          roomPhoto("photo-1586023492125-27b2c045efd7", "before"),
+          roomPhoto("photo-1586023492125-27b2c045efd7", "after")
+        ]
+      },
+      {
+        id: "bedroom", index: "03", name: "חדר שינה",
+        keyword: "שקט חדש", spec: "רכות · צל · רוגע",
+        // TODO: SWAP PLACEHOLDER — CHAPTERS[2].frames (חדר שינה).
+        frames: [
+          roomPhoto("photo-1505693416388-ac5ce068fe85", "before"),
+          roomPhoto("photo-1505693416388-ac5ce068fe85", "after")
+        ]
+      },
+      {
+        id: "bathroom", index: "04", name: "חדר רחצה",
+        keyword: "נקי ומרגיע", spec: "אבן · אור · רעננות",
+        // TODO: SWAP PLACEHOLDER — CHAPTERS[3].frames (חדר רחצה).
+        frames: [
+          roomPhoto("photo-1620626011761-996317b8d101", "before"),
+          roomPhoto("photo-1620626011761-996317b8d101", "after")
+        ]
+      }
+    ];
+
+    /* ---------- 3. זיהוי "פחות תנועה" ---------- */
+    var reduceMotionMQ = window.matchMedia("(prefers-reduced-motion: reduce)");
+    var prefersReducedMotion = reduceMotionMQ.matches;
+    var container = document.getElementById("chapters");
+
+    /* ---------- 4a. בנייה סטטית (Fallback) — "לפני | אחרי" ---------- */
+    function buildStatic() {
+      CHAPTERS.forEach(function (ch) {
+        var firstSrc = ch.frames[0], lastSrc = ch.frames[ch.frames.length - 1];
+        var section = document.createElement("section");
+        section.className = "static-chapter";
+        section.id = "chapter-" + ch.id;
+        section.innerHTML =
+          '<div class="static-chapter__head">' +
+            '<span class="static-chapter__index mono">' + ch.index + '</span>' +
+            '<h2 class="static-chapter__name">' + escapeXml(ch.name) + '</h2>' +
+            '<span class="static-chapter__kw">' + escapeXml(ch.keyword) + '</span>' +
+          '</div>' +
+          '<div class="static-pair">' +
+            '<figure class="static-figure"><img src="' + firstSrc + '" alt="לפני – ' + escapeXml(ch.name) + '" loading="lazy"><figcaption>לפני</figcaption></figure>' +
+            '<figure class="static-figure"><img src="' + lastSrc + '" alt="אחרי – ' + escapeXml(ch.name) + '" loading="lazy"><figcaption>אחרי</figcaption></figure>' +
+          '</div>';
+        container.appendChild(section);
+      });
+    }
+
+    /* ---------- 4b. בנייה עם scroll-scrubbing ---------- */
+    var stages = [];
+    function buildScrub() {
+      CHAPTERS.forEach(function (ch) {
+        var section = document.createElement("section");
+        section.className = "chapter";
+        section.id = "chapter-" + ch.id;
+        section.setAttribute("aria-label", "טרנספורמציה של " + ch.name + " — מלפני לאחרי בגלילה");
+
+        var stage = document.createElement("div");
+        stage.className = "stage";
+
+        // שכבות התמונה (סדר DOM = סדר ציור: אחרון מעל)
+        var framesWrap = document.createElement("div");
+        framesWrap.className = "frames";
+        var frameEls = [];
+        ch.frames.forEach(function (src) {
+          var f = document.createElement("div");
+          f.className = "frame";
+          f.style.backgroundImage = 'url("' + src + '")';
+          f.setAttribute("aria-hidden", "true");
+          framesWrap.appendChild(f);
+          frameEls.push(f);
+        });
+
+        var scrim = document.createElement("div");
+        scrim.className = "stage__scrim";
+
+        // ראש הפרק: אינדקס + שם
+        var top = document.createElement("div");
+        top.className = "stage__top";
+        top.innerHTML =
+          '<span class="stage__index mono">' + ch.index + ' / ' + escapeXml(ch.name) + '</span>' +
+          '<span class="stage__room">' + escapeXml(ch.name) + '</span>';
+
+        // מילת המפתח
+        var keyword = document.createElement("p");
+        keyword.className = "stage__keyword";
+        keyword.textContent = ch.keyword;
+
+        // חתימה: מד חשיפה + spec
+        var foot = document.createElement("div");
+        foot.className = "stage__foot";
+        foot.innerHTML =
+          '<div class="meter">' +
+            '<span class="meter__pole">לפני</span>' +
+            '<div class="meter__track"><span class="meter__fill"></span><span class="meter__dot"></span></div>' +
+            '<span class="meter__pole">אחרי</span>' +
+          '</div>' +
+          '<div class="stage__spec mono">' + escapeXml(ch.spec) + '</div>';
+
+        stage.appendChild(framesWrap);
+        stage.appendChild(scrim);
+        stage.appendChild(top);
+        stage.appendChild(keyword);
+        stage.appendChild(foot);
+        section.appendChild(stage);
+        container.appendChild(section);
+
+        stages.push({
+          section: section, stage: stage, frameEls: frameEls,
+          keywordEl: keyword,
+          meterFill: foot.querySelector(".meter__fill"),
+          meterDot: foot.querySelector(".meter__dot"),
+          active: false
+        });
+      });
+    }
+
+    /* ---------- 5. opacity של מילת המפתח — פייד בשליש האמצעי ---------- */
+    function keywordOpacity(p) {
+      var a = 0.30, b = 0.45, c = 0.60, d = 0.75;
+      if (p <= a || p >= d) return 0;
+      if (p < b) return (p - a) / (b - a);
+      if (p <= c) return 1;
+      return 1 - (p - c) / (d - c);
+    }
+
+    /* ---------- 6. רינדור פרק לפי מצב הגלילה ----------
+       floatIndex = progress*(N-1); שכבה תחתונה=1, עליונה=frac, השאר=0. */
+    function renderStage(item) {
+      var rect = item.section.getBoundingClientRect();
+      var scrollable = item.section.offsetHeight - item.stage.offsetHeight;
+      if (scrollable <= 0) return;
+      var p = clamp(-rect.top / scrollable, 0, 1);
+
+      var N = item.frameEls.length;
+      var floatIndex = p * (N - 1);
+      var lower = Math.floor(floatIndex);
+      var upper = Math.min(lower + 1, N - 1);
+      var frac = floatIndex - lower;
+      for (var i = 0; i < N; i++) {
+        var op = 0;
+        if (i === lower) op = 1;
+        else if (i === upper) op = frac;
+        item.frameEls[i].style.opacity = op;
+      }
+
+      var kop = keywordOpacity(p);
+      item.keywordEl.style.opacity = kop;
+      item.keywordEl.style.transform = "translateY(calc(-50% + " + ((1 - kop) * 16) + "px))";
+
+      // מד החשיפה (חתימת העיצוב)
+      if (item.meterFill) item.meterFill.style.transform = "scaleX(" + p + ")";
+      if (item.meterDot)  item.meterDot.style.right = (p * 100) + "%";
+    }
+
+    /* ---------- 7. לולאת עדכון: scroll -> rAF ---------- */
+    var ticking = false;
+    function requestUpdate() {
+      if (!ticking) { ticking = true; window.requestAnimationFrame(runUpdate); }
+    }
+    function runUpdate() {
+      ticking = false;
+      for (var i = 0; i < stages.length; i++) if (stages[i].active) renderStage(stages[i]);
+    }
+
+    /* ---------- 8. IntersectionObserver — מסמן פרקים פעילים ---------- */
+    function observeStages() {
+      var io = new IntersectionObserver(function (entries) {
+        entries.forEach(function (entry) {
+          for (var i = 0; i < stages.length; i++) {
+            if (stages[i].section === entry.target) { stages[i].active = entry.isIntersecting; break; }
+          }
+        });
+        requestUpdate();
+      }, { rootMargin: "100% 0px 100% 0px", threshold: 0 });
+      stages.forEach(function (s) { io.observe(s.section); });
+    }
+
+    /* ---------- 9. אתחול ---------- */
+    function init() {
+      document.getElementById("year").textContent = new Date().getFullYear();
+      if (prefersReducedMotion) { buildStatic(); return; }
+      buildScrub();
+      observeStages();
+      window.addEventListener("scroll", requestUpdate, { passive: true });
+      window.addEventListener("resize", requestUpdate, { passive: true });
+      requestUpdate(); // רינדור ראשוני
+    }
+
+    if (reduceMotionMQ.addEventListener) {
+      reduceMotionMQ.addEventListener("change", function () { location.reload(); });
+    }
+    if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", init);
+    else init();
+  })();
+  </script>
+</body>
+</html>
