@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<!--
+  =====================================================================
+  סטודיו דניאל — אודות
+  להחלפת תוכן אמיתי: חפשו "TODO: SWAP PLACEHOLDER".
+  =====================================================================
+-->
+<html lang="he" dir="rtl">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="theme-color" content="#F5EFE4" />
+  <title>אודות — סטודיו דניאל | עיצוב פנים</title>
+  <meta name="description" content="הסיפור של דניאל — מעצבת פנים. הגישה, התהליך, והדרך שבה בית הופך למקום שמחבק." />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Assistant:wght@300;400;600;700&family=Frank+Ruhl+Libre:wght@500;700;900&family=Space+Mono:wght@400;700&display=swap"
+    rel="stylesheet"
+  />
+
+  <style>
+    /* ===== Design Tokens (זהים לכל העמודים) ===== */
+    :root {
+      --cream:      #F5EFE4;
+      --cream-2:    #EFE6D6;
+      --espresso:   #2E241B;
+      --plaster:    #E7DED0;
+      --brass:      #C9A24B;
+      --brass-deep: #A8843A;
+      --sand:       #8A7A63;
+      --line:       rgba(46,36,27,0.14);
+      --display: "Frank Ruhl Libre", "David Libre", Georgia, serif;
+      --body:    "Assistant", "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+      --mono:    "Space Mono", "SFMono-Regular", ui-monospace, Menlo, Consolas, monospace;
+      --nav-h: 58px;
+    }
+    *, *::before, *::after { box-sizing: border-box; }
+    html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
+    body {
+      margin: 0;
+      background: var(--cream);
+      color: var(--espresso);
+      font-family: var(--body);
+      line-height: 1.65;
+      overflow-x: hidden;
+      -webkit-font-smoothing: antialiased;
+      padding-top: var(--nav-h);
+    }
+    img { display: block; max-width: 100%; }
+    a { color: inherit; }
+    ::selection { background: var(--brass); color: #fff; }
+    .mono { font-family: var(--mono); font-size: 0.72rem; letter-spacing: 0.14em; text-transform: uppercase; }
+    body::after {
+      content: ""; position: fixed; inset: 0; z-index: 9; pointer-events: none;
+      opacity: 0.04; mix-blend-mode: multiply;
+      background-image: url("data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20width='160'%20height='160'%3E%3Cfilter%20id='n'%3E%3CfeTurbulence%20type='fractalNoise'%20baseFrequency='0.85'%20numOctaves='2'/%3E%3C/filter%3E%3Crect%20width='100%25'%20height='100%25'%20filter='url(%23n)'/%3E%3C/svg%3E");
+    }
+    a:focus-visible { outline: 2px solid var(--brass-deep); outline-offset: 3px; border-radius: 2px; }
+
+    /* ===== ניווט (זהה לכל העמודים) ===== */
+    .nav {
+      position: fixed; top: 0; inset-inline: 0; z-index: 20;
+      height: var(--nav-h);
+      display: flex; align-items: center; justify-content: space-between; gap: 12px;
+      padding: 0 22px;
+      background: rgba(245,239,228,0.86);
+      -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px);
+      border-bottom: 1px solid var(--line);
+    }
+    .nav__brand { font-family: var(--display); font-weight: 700; font-size: 1.05rem; text-decoration: none; color: var(--espresso); white-space: nowrap; }
+    .nav__brand .dot { color: var(--brass-deep); }
+    .nav__links { display: flex; align-items: center; gap: 4px; }
+    .nav__links a {
+      text-decoration: none; font-size: 0.95rem; font-weight: 600; color: var(--sand);
+      padding: 10px 10px; border-radius: 2px; transition: color .25s ease;
+    }
+    .nav__links a:hover { color: var(--espresso); }
+    .nav__links a[aria-current="page"] { color: var(--brass-deep); }
+    @media (min-width: 768px) { .nav { padding: 0 40px; } .nav__links { gap: 14px; } }
+
+    /* ===== כותרת עמוד ===== */
+    .page-head { padding: 64px 22px 30px; max-width: 860px; margin: 0 auto; }
+    .page-head__eyebrow { color: var(--brass-deep); margin: 0 0 14px; }
+    .page-head__title {
+      font-family: var(--display); font-weight: 900;
+      font-size: clamp(2.4rem, 10vw, 4.2rem); line-height: 1.02; margin: 0;
+    }
+    .page-head__title em { font-style: normal; color: var(--brass-deep); }
+
+    /* ===== פורטרט + סיפור ===== */
+    .about { max-width: 860px; margin: 0 auto; padding: 12px 22px 60px; }
+    .about__grid { display: grid; gap: 28px; }
+    .about__portrait { margin: 0; }
+    .about__portrait img {
+      width: 100%; aspect-ratio: 4/5; object-fit: cover;
+      border-radius: 3px; border: 1px solid var(--line);
+    }
+    .about__portrait figcaption { margin-top: 10px; color: var(--sand); }
+    .about__story p { margin: 0 0 18px; font-size: 1.05rem; }
+    .about__story .lead {
+      font-family: var(--display); font-weight: 700;
+      font-size: clamp(1.3rem, 5.5vw, 1.7rem); line-height: 1.35; color: var(--espresso);
+    }
+    .about__story .rest { color: var(--sand); }
+    @media (min-width: 768px) {
+      .about__grid { grid-template-columns: 5fr 7fr; gap: 44px; align-items: start; }
+    }
+
+    /* ===== תהליך העבודה ===== */
+    .process { border-top: 1px solid var(--line); background: var(--cream-2); padding: 64px 22px; }
+    .process__inner { max-width: 860px; margin: 0 auto; }
+    .process__title {
+      font-family: var(--display); font-weight: 900;
+      font-size: clamp(1.8rem, 7.5vw, 2.6rem); margin: 0 0 34px;
+    }
+    .steps { display: grid; gap: 22px; margin: 0; padding: 0; list-style: none; counter-reset: step; }
+    .step {
+      position: relative;
+      padding: 22px 20px 20px;
+      background: var(--cream);
+      border: 1px solid var(--line);
+      border-radius: 3px;
+    }
+    .step__num { color: var(--brass-deep); display: block; margin-bottom: 10px; }
+    .step__name { font-family: var(--display); font-weight: 700; font-size: 1.25rem; margin: 0 0 8px; }
+    .step__text { color: var(--sand); margin: 0; font-size: 0.98rem; }
+    @media (min-width: 768px) { .steps { grid-template-columns: repeat(2, 1fr); } }
+    @media (min-width: 1100px) { .steps { grid-template-columns: repeat(4, 1fr); } }
+
+    /* ===== CTA קטן ===== */
+    .mini-cta { padding: 70px 22px; text-align: center; }
+    .mini-cta__title {
+      font-family: var(--display); font-weight: 900;
+      font-size: clamp(1.7rem, 7vw, 2.5rem); margin: 0 0 24px;
+    }
+    .btn {
+      display: inline-flex; align-items: center; gap: 12px;
+      padding: 15px 30px; font-family: var(--body); font-size: 1.02rem; font-weight: 700;
+      color: #fff; background: var(--brass-deep); border: 1px solid var(--brass-deep);
+      border-radius: 2px; text-decoration: none; cursor: pointer;
+      transition: background-color .3s ease, color .3s ease, transform .2s ease;
+    }
+    .btn:hover { background: var(--brass); border-color: var(--brass); color: var(--espresso); }
+    .btn:active { transform: translateY(1px); }
+
+    /* ===== Footer ===== */
+    .site-footer {
+      padding: 26px 22px calc(30px + env(safe-area-inset-bottom));
+      display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap;
+      color: var(--sand); border-top: 1px solid var(--line); background: var(--cream);
+    }
+    .site-footer a { color: var(--sand); text-decoration: none; }
+    .site-footer a:hover { color: var(--espresso); }
+
+    /* אנימציית כניסה עדינה */
+    .reveal { opacity: 0; transform: translateY(18px); animation: rise .8s cubic-bezier(.2,.7,.2,1) forwards; }
+    .reveal.d2 { animation-delay: .12s; }
+    .reveal.d3 { animation-delay: .24s; }
+    @keyframes rise { to { opacity: 1; transform: none; } }
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+      .reveal { animation: none; opacity: 1; transform: none; }
+    }
+  </style>
+</head>
+<body>
+
+  <nav class="nav" aria-label="ניווט ראשי">
+    <a class="nav__brand" href="index.html">סטודיו דניאל<span class="dot">.</span></a>
+    <div class="nav__links">
+      <a href="index.html">בית</a>
+      <a href="portfolio.html">פרויקטים</a>
+      <a href="about.html" aria-current="page">אודות</a>
+      <a href="contact.html">צור קשר</a>
+    </div>
+  </nav>
+
+  <header class="page-head">
+    <p class="page-head__eyebrow mono reveal">— אודות</p>
+    <h1 class="page-head__title reveal d2">נעים להכיר,<br /><em>אני דניאל.</em></h1>
+  </header>
+
+  <main>
+    <section class="about">
+      <div class="about__grid reveal d3">
+        <figure class="about__portrait">
+          <!-- TODO: SWAP PLACEHOLDER — תמונת פורטרט אמיתית של דניאל -->
+          <img
+            src="https://images.unsplash.com/photo-1600607686527-6fb886090705?auto=format&fit=crop&w=900&h=1125&q=72"
+            alt="דניאל — מעצבת פנים"
+            loading="lazy"
+          />
+          <figcaption class="mono">דניאל · מעצבת פנים</figcaption>
+        </figure>
+        <div class="about__story">
+          <!-- TODO: SWAP PLACEHOLDER — הסיפור האמיתי של דניאל -->
+          <p class="lead">אני מאמינה שבית טוב לא צריך להרשים אף אחד — הוא צריך לחבק את מי שגר בו.</p>
+          <p class="rest">כבר שנים שאני מלווה משפחות וזוגות בדרך לבית שמרגיש שלהם: מהשיחה הראשונה על מה שמציק, דרך בחירת חומרים, אור וצבע — ועד הרגע שבו נכנסים הביתה ונושמים עמוק.</p>
+          <p class="rest">הגישה שלי פשוטה: להקשיב קודם, לעצב אחר כך. כל פרויקט מתחיל באנשים — באיך שהם חיים, מתארחים, מבשלים ונרגעים — ורק אז מגיעים הקירות, הטקסטיל והתאורה.</p>
+          <p class="rest">התוצאה היא לא "בית מקטלוג", אלא בית עם נשמה: חם, מדויק, ועם נגיעות קטנות שגורמות לחייך כל בוקר מחדש.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="process" aria-labelledby="process-title">
+      <div class="process__inner">
+        <h2 class="process__title" id="process-title">איך זה עובד?</h2>
+        <ol class="steps">
+          <li class="step">
+            <span class="step__num mono">01</span>
+            <h3 class="step__name">פגישת היכרות</h3>
+            <p class="step__text">שיחה פתוחה אצלכם בבית — מה עובד, מה מציק, ואיך אתם חולמים לחיות.</p>
+          </li>
+          <li class="step">
+            <span class="step__num mono">02</span>
+            <h3 class="step__name">קונספט ותכנון</h3>
+            <p class="step__text">לוח השראה, פלטת חומרים וצבעים, ותוכנית מסודרת שמתאימה לתקציב.</p>
+          </li>
+          <li class="step">
+            <span class="step__num mono">03</span>
+            <h3 class="step__name">ביצוע וליווי</h3>
+            <p class="step__text">ליווי צמוד מול בעלי מקצוע וספקים — עד הפרט האחרון, בלי כאב ראש.</p>
+          </li>
+          <li class="step">
+            <span class="step__num mono">04</span>
+            <h3 class="step__name">מסירה וסטיילינג</h3>
+            <p class="step__text">הנגיעות האחרונות: טקסטיל, תאורה ואבזור — והבית מוכן לחיים.</p>
+          </li>
+        </ol>
+      </div>
+    </section>
+
+    <section class="mini-cta">
+      <h2 class="mini-cta__title">רוצים לשמוע איך זה יעבוד אצלכם?</h2>
+      <a class="btn" href="contact.html">בואו נדבר</a>
+    </section>
+  </main>
+
+  <footer class="site-footer mono">
+    <span>STUDIO DANIEL · עיצוב פנים</span>
+    <!-- TODO: SWAP PLACEHOLDER — טלפון אמיתי -->
+    <a href="tel:+972500000000" dir="ltr">050-000-0000</a>
+    <span>EST. <span id="year"></span></span>
+  </footer>
+
+  <script>document.getElementById("year").textContent = new Date().getFullYear();</script>
+</body>
+</html>

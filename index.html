@@ -1,22 +1,21 @@
 <!DOCTYPE html>
 <!--
   =====================================================================
-  סטודיו דניאל — דף נחיתה Scrollytelling (לפני / אחרי)
-  קונספט עיצובי: "מונוגרפיה בשעת בין ערביים" — חם, כהה, עריכתי.
+  סטודיו דניאל — דף הבית (Scrollytelling לפני / אחרי)
+  קונספט עיצובי: "בית מלא אור" — בהיר, חמים, אלגנטי.
   ---------------------------------------------------------------------
   קובץ בודד: HTML + CSS + JS inline. ללא build, ללא framework.
-  מוכן להעלאה כמו שהוא לכל אחסון סטטי (Netlify / Vercel / GitHub Pages).
-  להחלפת תמונות אמיתיות: חפשו "// TODO: SWAP PLACEHOLDER".
+  עמודים נוספים: about.html · portfolio.html · contact.html
+  להחלפת תוכן אמיתי: חפשו "TODO: SWAP PLACEHOLDER".
   =====================================================================
 -->
 <html lang="he" dir="rtl">
 <head>
   <meta charset="utf-8" />
-  <!-- Mobile-first: עוצב תחילה ל-375px (לינק בביו של אינסטגרם) -->
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-  <meta name="theme-color" content="#241C15" />
+  <meta name="theme-color" content="#F5EFE4" />
   <title>סטודיו דניאל — עיצוב פנים | כל חדר, מסופר מחדש</title>
-  <meta name="description" content="סטודיו דניאל — עיצוב פנים. גללו וראו איך אור וחומר משנים חלל: טרנספורמציה של מטבח, סלון, חדר שינה וחדר רחצה, מ׳לפני׳ ל׳אחרי׳." />
+  <meta name="description" content="סטודיו דניאל — עיצוב פנים חם ומדויק. גללו וראו איך אור וחומר משנים חלל: מטבח, סלון, חדר שינה וחדר רחצה — מ׳לפני׳ ל׳אחרי׳." />
 
   <!-- ===== גופנים ===== -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -28,25 +27,27 @@
 
   <style>
     /* =================================================================
-       1. Design Tokens — פלטה חמה-כהה, עריכתית
+       1. Design Tokens — פלטה בהירה-חמימה, אלגנטית
        ================================================================= */
     :root {
-      --espresso:   #241C15;  /* רקע ראשי — כמעט-שחור חמים */
-      --espresso-2: #2E241B;  /* גוון מעט בהיר יותר */
-      --plaster:    #E7DED0;  /* טקסט ראשי — טיח חמים */
+      --cream:      #F5EFE4;  /* רקע ראשי — שמנת חמימה */
+      --cream-2:    #EFE6D6;  /* רקע משני / קלפים */
+      --espresso:   #2E241B;  /* טקסט ראשי — חום כהה */
+      --espresso-d: #241C15;  /* במה כהה (פרקי התמונות) */
+      --plaster:    #E7DED0;  /* טקסט על גבי הבמה הכהה */
       --brass:      #C9A24B;  /* מבטא — פליז */
-      --brass-soft: #D8B978;  /* פליז בהיר (hover) */
-      --sand:       #B8A98F;  /* נייטרל חמים לטקסט משני */
-      --olive:      #6E6A54;  /* ירוק-זית מעושן */
-      --line:       rgba(231,222,208,0.16); /* קווי הפרדה דקים */
+      --brass-deep: #A8843A;  /* פליז כהה (טקסט על בהיר, קונטרסט) */
+      --sand:       #8A7A63;  /* טקסט משני חמים */
+      --line:       rgba(46,36,27,0.14);       /* קווי הפרדה על בהיר */
+      --line-dark:  rgba(231,222,208,0.16);    /* קווי הפרדה על כהה */
 
-      /* גובה "במה" מוצמדת */
       --stage-h: 100vh;
 
-      /* גופנים */
       --display: "Frank Ruhl Libre", "David Libre", Georgia, serif;
       --body:    "Assistant", "Segoe UI", "Helvetica Neue", Arial, sans-serif;
       --mono:    "Space Mono", "SFMono-Regular", ui-monospace, Menlo, Consolas, monospace;
+
+      --nav-h: 58px;
     }
     @supports (height: 100svh) { :root { --stage-h: 100svh; } }
 
@@ -57,8 +58,8 @@
     html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
     body {
       margin: 0;
-      background: var(--espresso);
-      color: var(--plaster);
+      background: var(--cream);
+      color: var(--espresso);
       font-family: var(--body);
       font-weight: 400;
       line-height: 1.65;
@@ -67,9 +68,8 @@
     }
     img { display: block; max-width: 100%; }
     a { color: inherit; }
-    ::selection { background: var(--brass); color: var(--espresso); }
+    ::selection { background: var(--brass); color: #fff; }
 
-    /* מיקרו-כותרת מונו (שכבת "אנוטציה" אדריכלית) */
     .mono {
       font-family: var(--mono);
       font-size: 0.72rem;
@@ -77,27 +77,72 @@
       text-transform: uppercase;
     }
 
-    /* גרעין עדין על כל הדף — חום ומרקם */
+    /* גרעין עדין — מרקם נייר חמים */
     body::after {
       content: "";
       position: fixed;
       inset: 0;
       z-index: 9;
       pointer-events: none;
-      opacity: 0.05;
-      mix-blend-mode: overlay;
+      opacity: 0.04;
+      mix-blend-mode: multiply;
       background-image: url("data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20width='160'%20height='160'%3E%3Cfilter%20id='n'%3E%3CfeTurbulence%20type='fractalNoise'%20baseFrequency='0.85'%20numOctaves='2'/%3E%3C/filter%3E%3Crect%20width='100%25'%20height='100%25'%20filter='url(%23n)'/%3E%3C/svg%3E");
     }
 
-    /* מיקוד נגיש */
-    a:focus-visible, .btn:focus-visible {
-      outline: 2px solid var(--brass);
+    a:focus-visible, .btn:focus-visible, button:focus-visible {
+      outline: 2px solid var(--brass-deep);
       outline-offset: 3px;
       border-radius: 2px;
     }
 
     /* =================================================================
-       3. Hero — פתיח עריכתי, מיושר להתחלה (ימין ב-RTL), עוגן תחתון
+       3. ניווט עליון — דק, קבוע, RTL
+       ================================================================= */
+    .nav {
+      position: fixed;
+      top: 0; inset-inline: 0;
+      z-index: 20;
+      height: var(--nav-h);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 0 22px;
+      background: rgba(245,239,228,0.86);
+      -webkit-backdrop-filter: blur(10px);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid var(--line);
+    }
+    .nav__brand {
+      font-family: var(--display);
+      font-weight: 700;
+      font-size: 1.05rem;
+      text-decoration: none;
+      color: var(--espresso);
+      white-space: nowrap;
+    }
+    .nav__brand .dot { color: var(--brass-deep); }
+    .nav__links { display: flex; align-items: center; gap: 4px; }
+    .nav__links a {
+      text-decoration: none;
+      font-size: 0.95rem;
+      font-weight: 600;
+      color: var(--sand);
+      padding: 10px 10px; /* יעד מגע נוח */
+      border-radius: 2px;
+      transition: color .25s ease;
+    }
+    .nav__links a:hover { color: var(--espresso); }
+    .nav__links a[aria-current="page"] {
+      color: var(--brass-deep);
+    }
+    @media (min-width: 768px) {
+      .nav { padding: 0 40px; }
+      .nav__links { gap: 14px; }
+    }
+
+    /* =================================================================
+       4. Hero — פתיח עריכתי בהיר
        ================================================================= */
     .hero {
       position: relative;
@@ -105,20 +150,20 @@
       display: flex;
       flex-direction: column;
       justify-content: flex-end;
-      padding: 28px 22px calc(26px + env(safe-area-inset-bottom));
+      gap: 26px;
+      padding: calc(var(--nav-h) + 26px) 22px calc(26px + env(safe-area-inset-bottom));
       overflow: hidden;
       background:
-        radial-gradient(130% 100% at 88% 8%, rgba(201,162,75,0.18), transparent 46%),
-        radial-gradient(120% 90% at 6% 100%, rgba(110,106,84,0.20), transparent 55%),
-        var(--espresso);
+        radial-gradient(130% 100% at 88% 8%, rgba(201,162,75,0.20), transparent 46%),
+        radial-gradient(120% 90% at 6% 100%, rgba(138,122,99,0.14), transparent 55%),
+        var(--cream);
     }
-    /* הילה חמה מפושטת ברקע */
     .hero::before {
       content: "";
       position: absolute;
       inset: -25% -20% auto auto;
       width: 78vw; height: 78vw; max-width: 520px; max-height: 520px;
-      background: radial-gradient(circle, rgba(201,162,75,0.16), transparent 70%);
+      background: radial-gradient(circle, rgba(201,162,75,0.18), transparent 70%);
       border-radius: 50%;
       pointer-events: none;
     }
@@ -126,10 +171,10 @@
       display: inline-flex;
       align-items: center;
       gap: 9px;
-      color: var(--brass);
+      color: var(--brass-deep);
       margin: 0 0 22px;
     }
-    .hero__eyebrow .tick { width: 26px; height: 1px; background: var(--brass); display: inline-block; }
+    .hero__eyebrow .tick { width: 26px; height: 1px; background: var(--brass-deep); display: inline-block; }
     .hero__title {
       font-family: var(--display);
       font-weight: 900;
@@ -137,17 +182,44 @@
       line-height: 0.98;
       letter-spacing: -0.01em;
       margin: 0 0 22px;
-      color: var(--plaster);
+      color: var(--espresso);
     }
-    .hero__title em {
-      font-style: normal;
-      color: var(--brass);
-    }
+    .hero__title em { font-style: normal; color: var(--brass-deep); }
     .hero__subtitle {
       font-size: clamp(1.02rem, 4.4vw, 1.3rem);
       color: var(--sand);
       max-width: 34ch;
       margin: 0 0 34px;
+    }
+
+    /* תמונת אווירה — Ken Burns עדין (מגזין עיצוב) */
+    .hero__media {
+      margin: 0;
+      flex: 1;
+      min-height: 34vh;
+      overflow: hidden;
+      border-radius: 3px;
+      border: 1px solid var(--line);
+      background: var(--cream-2);
+    }
+    .hero__media img {
+      width: 100%; height: 100%; object-fit: cover;
+      animation: kenburns 18s ease-in-out infinite alternate;
+    }
+    @keyframes kenburns { from { transform: scale(1); } to { transform: scale(1.09); } }
+
+    /* דסקטופ: מגזין — טקסט מימין, תמונה משמאל */
+    @media (min-width: 900px) {
+      .hero {
+        display: grid;
+        grid-template-columns: 6fr 5fr;
+        grid-template-rows: 1fr auto;
+        align-items: center;
+        column-gap: 56px;
+      }
+      .hero__text { grid-column: 1; }
+      .hero__media { grid-column: 2; grid-row: 1; height: min(72vh, 640px); min-height: 0; }
+      .hero__foot { grid-column: 1 / -1; }
     }
 
     /* כפתור — קו פליז, מילוי בריחוף */
@@ -159,20 +231,19 @@
       font-family: var(--body);
       font-size: 1.02rem;
       font-weight: 700;
-      color: var(--plaster);
+      color: var(--espresso);
       background: transparent;
-      border: 1px solid var(--brass);
+      border: 1px solid var(--brass-deep);
       border-radius: 2px;
       text-decoration: none;
       cursor: pointer;
       transition: background-color .3s ease, color .3s ease, transform .2s ease;
     }
-    .btn:hover { background: var(--brass); color: var(--espresso); }
+    .btn:hover { background: var(--brass-deep); color: #fff; }
     .btn:active { transform: translateY(1px); }
-    .btn--solid { background: var(--brass); color: var(--espresso); border-color: var(--brass); }
-    .btn--solid:hover { background: var(--brass-soft); border-color: var(--brass-soft); }
+    .btn--solid { background: var(--brass-deep); color: #fff; border-color: var(--brass-deep); }
+    .btn--solid:hover { background: var(--brass); border-color: var(--brass); color: var(--espresso); }
 
-    /* פס תחתון של ה-Hero — אנוטציה + הפרדה */
     .hero__foot {
       margin-top: 30px;
       padding-top: 16px;
@@ -183,10 +254,9 @@
       gap: 12px;
       color: var(--sand);
     }
-    .hero__foot .cue { color: var(--brass); animation: bob 1.9s ease-in-out infinite; }
+    .hero__foot .cue { color: var(--brass-deep); animation: bob 1.9s ease-in-out infinite; }
     @keyframes bob { 0%,100% { transform: translateY(0); opacity: .7; } 50% { transform: translateY(6px); opacity: 1; } }
 
-    /* אנימציית טעינה — עלייה מדורגת */
     .reveal { opacity: 0; transform: translateY(22px); animation: rise .9s cubic-bezier(.2,.7,.2,1) forwards; }
     .reveal.d1 { animation-delay: .05s; }
     .reveal.d2 { animation-delay: .18s; }
@@ -196,20 +266,20 @@
     @keyframes rise { to { opacity: 1; transform: none; } }
 
     /* =================================================================
-       4. פרק (Chapter) — מנגנון scroll-scrubbing
+       5. פרק (Chapter) — מנגנון scroll-scrubbing (במה כהה בכוונה:
+          קונטרסט דרמטי לתמונות, בעוד שהעמוד סביבן בהיר)
        ================================================================= */
     .chapter {
       position: relative;
-      height: calc(var(--stage-h) * 3); /* פי 3 => מרחק הצמדה של פי 2 */
+      height: calc(var(--stage-h) * 3);
     }
     .stage {
       position: sticky;
       top: 0;
       height: var(--stage-h);
       overflow: hidden;
-      background: var(--espresso);
+      background: var(--espresso-d);
     }
-    /* מכל השכבות — עם זום בסיס לתנועת Ken Burns (נשלט ב-JS) */
     .frames { position: absolute; inset: 0; transform: scale(1.12); will-change: transform; }
     .frame {
       position: absolute;
@@ -217,21 +287,18 @@
       background-position: center;
       background-size: cover;
       background-repeat: no-repeat;
-      will-change: opacity;   /* אנימציה על opacity בלבד */
+      will-change: opacity;
       opacity: 0;
     }
-    /* ויניאט + הכהיה בקצוות לקריאוּת הטקסט */
     .stage__scrim {
       position: absolute; inset: 0; pointer-events: none;
       background:
         linear-gradient(180deg, rgba(36,28,21,0.72) 0%, rgba(36,28,21,0) 24%, rgba(36,28,21,0) 52%, rgba(36,28,21,0.86) 100%),
         radial-gradient(120% 80% at 50% 40%, transparent 55%, rgba(36,28,21,0.4) 100%);
     }
-
-    /* שורת ראש הפרק: אינדקס מונו + שם החדר */
     .stage__top {
       position: absolute;
-      top: calc(22px + env(safe-area-inset-top));
+      top: calc(var(--nav-h) + 16px + env(safe-area-inset-top));
       inset-inline: 22px;
       display: flex;
       align-items: baseline;
@@ -247,8 +314,6 @@
       color: var(--plaster);
       text-shadow: 0 2px 18px rgba(0,0,0,0.45);
     }
-
-    /* מילת המפתח — פייד בשליש האמצעי (נשלט ב-JS) */
     .stage__keyword {
       position: absolute;
       inset-inline: 24px;
@@ -271,8 +336,6 @@
       background: var(--brass);
       margin-bottom: 18px;
     }
-
-    /* ===== כיתוב תחתון: תיוג החדר (מבטא פליז) — בלי פרוגרס ===== */
     .stage__foot {
       position: absolute;
       inset-inline: 22px;
@@ -287,14 +350,14 @@
     .spec-tick { width: 22px; height: 1px; background: var(--brass); display: inline-block; flex: none; }
 
     /* =================================================================
-       5. Fallback — prefers-reduced-motion: "לפני | אחרי" סטטי
+       6. Fallback — prefers-reduced-motion: "לפני | אחרי" סטטי
        ================================================================= */
     .static-chapter { padding: 46px 20px; border-bottom: 1px solid var(--line); }
     .static-chapter__head {
       display: flex; align-items: baseline; gap: 12px;
       max-width: 1100px; margin: 0 auto 18px;
     }
-    .static-chapter__index { color: var(--brass); }
+    .static-chapter__index { color: var(--brass-deep); }
     .static-chapter__name {
       font-family: var(--display); font-weight: 700;
       font-size: clamp(1.7rem, 7vw, 2.6rem); margin: 0;
@@ -315,46 +378,114 @@
     @media (prefers-reduced-motion: reduce) {
       html { scroll-behavior: auto; }
       .stage { position: static; height: auto; }
-      .hero__foot .cue, .reveal { animation: none; }
+      .hero__foot .cue, .reveal, .hero__media img { animation: none; }
       .reveal { opacity: 1; transform: none; }
     }
 
     /* =================================================================
-       6. CTA + Footer
+       7. פרויקטים נבחרים + ציטוט + טיזר אודות + CTA + Footer
        ================================================================= */
+    .projects { padding: 84px 22px 70px; border-top: 1px solid var(--line); background: var(--cream); }
+    .projects__inner { max-width: 1100px; margin: 0 auto; }
+    .projects__head {
+      display: flex; align-items: baseline; justify-content: space-between;
+      gap: 14px; flex-wrap: wrap; margin-bottom: 30px;
+    }
+    .projects__title {
+      font-family: var(--display); font-weight: 900;
+      font-size: clamp(1.8rem, 7.5vw, 2.6rem); margin: 0;
+    }
+    .projects__all {
+      color: var(--brass-deep); font-weight: 700; text-decoration: none;
+      border-bottom: 1px solid var(--brass-deep); padding-bottom: 2px;
+      transition: color .25s ease, border-color .25s ease;
+    }
+    .projects__all:hover { color: var(--espresso); border-color: var(--espresso); }
+    .projects__grid { display: grid; gap: 24px; }
+    @media (min-width: 640px) { .projects__grid { grid-template-columns: repeat(3, 1fr); } }
+    .pcard { text-decoration: none; display: block; }
+    .pcard__media {
+      position: relative; overflow: hidden; border-radius: 3px;
+      border: 1px solid var(--line); aspect-ratio: 4/5; background: var(--cream-2);
+    }
+    .pcard__media img {
+      width: 100%; height: 100%; object-fit: cover;
+      transition: transform .5s cubic-bezier(.2,.7,.2,1);
+    }
+    .pcard:hover .pcard__media img { transform: scale(1.045); }
+    .pcard__name {
+      font-family: var(--display); font-weight: 700;
+      font-size: 1.2rem; margin: 12px 0 4px; color: var(--espresso);
+    }
+    .pcard__tags { color: var(--sand); margin: 0; }
+
+    .quote { padding: 84px 22px; border-top: 1px solid var(--line); background: var(--cream-2); }
+    .quote__inner { max-width: 720px; margin: 0 auto; text-align: center; }
+    .quote__mark { color: var(--brass-deep); font-family: var(--display); font-size: 3rem; line-height: 0; display: block; margin-bottom: 18px; }
+    .quote__text {
+      font-family: var(--display); font-weight: 700;
+      font-size: clamp(1.4rem, 6vw, 2.1rem); line-height: 1.3; margin: 0 0 20px;
+    }
+    .quote__by { color: var(--sand); margin: 0; }
+
+    .teaser {
+      padding: 84px 22px;
+      border-top: 1px solid var(--line);
+      background: var(--cream);
+    }
+    .teaser__inner { max-width: 720px; margin: 0 auto; text-align: center; }
+    .teaser__eyebrow { color: var(--brass-deep); margin: 0 0 16px; }
+    .teaser__quote {
+      font-family: var(--display);
+      font-weight: 700;
+      font-size: clamp(1.5rem, 6.5vw, 2.4rem);
+      line-height: 1.25;
+      margin: 0 0 18px;
+    }
+    .teaser__text { color: var(--sand); margin: 0 0 28px; }
+    .teaser__link {
+      color: var(--brass-deep); font-weight: 700; text-decoration: none;
+      border-bottom: 1px solid var(--brass-deep); padding-bottom: 2px;
+      transition: color .25s ease, border-color .25s ease;
+    }
+    .teaser__link:hover { color: var(--espresso); border-color: var(--espresso); }
+
     .cta {
       position: relative;
       padding: 92px 22px 40px;
       background:
-        radial-gradient(120% 90% at 82% 0%, rgba(201,162,75,0.14), transparent 52%),
-        var(--espresso-2);
+        radial-gradient(120% 90% at 82% 0%, rgba(201,162,75,0.16), transparent 52%),
+        var(--cream-2);
       border-top: 1px solid var(--line);
     }
-    .cta__eyebrow { color: var(--brass); margin: 0 0 18px; }
+    .cta__eyebrow { color: var(--brass-deep); margin: 0 0 18px; }
     .cta__title {
       font-family: var(--display); font-weight: 900;
       font-size: clamp(2.2rem, 9.5vw, 3.8rem); line-height: 1.02;
       margin: 0 0 16px; max-width: 16ch;
     }
     .cta__text { color: var(--sand); font-size: clamp(1rem, 4.4vw, 1.18rem); max-width: 42ch; margin: 0 0 32px; }
+
     .site-footer {
       padding: 26px 22px calc(30px + env(safe-area-inset-bottom));
-      display: flex; align-items: center; justify-content: space-between; gap: 12px;
-      color: var(--sand); border-top: 1px solid var(--line); background: var(--espresso);
+      display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap;
+      color: var(--sand); border-top: 1px solid var(--line); background: var(--cream);
     }
+    .site-footer a { color: var(--sand); text-decoration: none; }
+    .site-footer a:hover { color: var(--espresso); }
 
     /* =================================================================
-       7. הרחבה לדסקטופ (mobile-first — כאן רק מרחיבים)
+       8. הרחבה לדסקטופ
        ================================================================= */
     @media (min-width: 768px) {
-      .hero { padding: 48px; }
+      .hero { padding-inline: 48px; }
       .hero__subtitle { font-size: 1.35rem; }
-      .stage__top { top: 34px; inset-inline: 40px; }
+      .stage__top { inset-inline: 40px; }
       .stage__foot { inset-inline: 40px; bottom: 34px; }
       .stage__keyword { inset-inline: 40px; }
     }
     @media (min-width: 1000px) {
-      .hero { padding: 64px; }
+      .hero { padding-inline: 64px; }
       .hero__title { font-size: clamp(5rem, 9vw, 8rem); }
       .hero__subtitle { max-width: 40ch; }
     }
@@ -364,15 +495,36 @@
 </head>
 <body>
 
+  <!-- ================= ניווט ================= -->
+  <nav class="nav" aria-label="ניווט ראשי">
+    <!-- TODO: SWAP PLACEHOLDER — שם העסק -->
+    <a class="nav__brand" href="index.html">סטודיו דניאל<span class="dot">.</span></a>
+    <div class="nav__links">
+      <a href="index.html" aria-current="page">בית</a>
+      <a href="portfolio.html">פרויקטים</a>
+      <a href="about.html">אודות</a>
+      <a href="contact.html">צור קשר</a>
+    </div>
+  </nav>
+
   <!-- ================= Hero ================= -->
   <header class="hero">
-    <!-- TODO: SWAP PLACEHOLDER — שם העסק (מופיע כאן, ב-<title> וב-footer) -->
-    <p class="hero__eyebrow mono reveal d1"><span class="tick"></span> STUDIO DANIEL · עיצוב פנים</p>
-    <h1 class="hero__title reveal d2">כל חדר,<br /><em>מסופר מחדש.</em></h1>
-    <p class="hero__subtitle reveal d3">גללו וראו איך אור וחומר משנים חלל — מ׳לפני׳ ל׳אחרי׳, בתנועה אחת.</p>
-    <div class="reveal d4">
-      <a class="btn" href="#chapter-kitchen">לסיור בין החדרים ↓</a>
+    <div class="hero__text">
+      <p class="hero__eyebrow mono reveal d1"><span class="tick"></span> STUDIO DANIEL · עיצוב פנים</p>
+      <h1 class="hero__title reveal d2">כל חדר,<br /><em>מסופר מחדש.</em></h1>
+      <p class="hero__subtitle reveal d3">גללו וראו איך אור וחומר משנים חלל — מ׳לפני׳ ל׳אחרי׳, בתנועה אחת.</p>
+      <div class="reveal d4">
+        <a class="btn" href="#chapter-kitchen">לסיור בין החדרים ↓</a>
+      </div>
     </div>
+
+    <figure class="hero__media reveal d3">
+      <!-- TODO: SWAP PLACEHOLDER — תמונת אווירה מפרויקט אמיתי -->
+      <img
+        src="https://images.unsplash.com/photo-1615529182904-14819c35db37?auto=format&fit=crop&w=1000&h=1250&q=75"
+        alt="חלל מגורים חם ומואר בגוונים טבעיים"
+      />
+    </figure>
 
     <div class="hero__foot mono reveal d5">
       <span>04 חדרים · לפני / אחרי</span>
@@ -386,6 +538,61 @@
 
   <!-- ================= הפרקים מוזרקים לכאן ע"י JS ================= -->
   <main id="chapters"></main>
+
+  <!-- ================= פרויקטים נבחרים ================= -->
+  <section class="projects" aria-labelledby="projects-title">
+    <div class="projects__inner">
+      <div class="projects__head">
+        <h2 class="projects__title" id="projects-title">פרויקטים נבחרים</h2>
+        <a class="projects__all" href="portfolio.html">לכל הפרויקטים ←</a>
+      </div>
+      <!-- TODO: SWAP PLACEHOLDER — תמונות ופרטי פרויקטים אמיתיים -->
+      <div class="projects__grid">
+        <a class="pcard" href="portfolio.html">
+          <div class="pcard__media">
+            <img src="https://images.unsplash.com/photo-1616486338812-3dadae4b4ace?auto=format&fit=crop&w=800&h=1000&q=72" alt="סלון בהיר עם ספה חומה ותאורה חמה" loading="lazy" />
+          </div>
+          <h3 class="pcard__name">דירה בצפון תל אביב</h3>
+          <p class="pcard__tags mono">סלון · מטבח · 95 מ"ר</p>
+        </a>
+        <a class="pcard" href="portfolio.html">
+          <div class="pcard__media">
+            <img src="https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?auto=format&fit=crop&w=800&h=1000&q=72" alt="פינת ישיבה עם עץ טבעי וטקסטיל רך" loading="lazy" />
+          </div>
+          <h3 class="pcard__name">בית פרטי ברעננה</h3>
+          <p class="pcard__tags mono">קומה שלמה · 180 מ"ר</p>
+        </a>
+        <a class="pcard" href="portfolio.html">
+          <div class="pcard__media">
+            <img src="https://images.unsplash.com/photo-1616594039964-ae9021a400a0?auto=format&fit=crop&w=800&h=1000&q=72" alt="חדר שינה בגוונים חמים ורכים" loading="lazy" />
+          </div>
+          <h3 class="pcard__name">חדר שינה בהרצליה</h3>
+          <p class="pcard__tags mono">חדר שינה · חדר ארונות</p>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= ציטוט לקוחה ================= -->
+  <section class="quote">
+    <div class="quote__inner">
+      <span class="quote__mark" aria-hidden="true">”</span>
+      <!-- TODO: SWAP PLACEHOLDER — המלצה אמיתית של לקוחה -->
+      <blockquote class="quote__text" style="margin-inline:0;">דניאל לקחה דירה שהרגישה כמו מסדרון — והחזירה לנו בית שאנחנו לא רוצים לצאת ממנו.</blockquote>
+      <p class="quote__by mono">מיכל ויואב · רמת גן</p>
+    </div>
+  </section>
+
+  <!-- ================= טיזר אודות ================= -->
+  <section class="teaser">
+    <div class="teaser__inner">
+      <p class="teaser__eyebrow mono">— מי מאחורי הסטודיו</p>
+      <!-- TODO: SWAP PLACEHOLDER — ציטוט/משפט אישי של דניאל -->
+      <p class="teaser__quote">"בית טוב לא צריך להרשים אף אחד.<br />הוא צריך לחבק את מי שגר בו."</p>
+      <p class="teaser__text">דניאל · מעצבת פנים</p>
+      <a class="teaser__link" href="about.html">להכיר את דניאל ואת התהליך ←</a>
+    </div>
+  </section>
 
   <!-- ================= CTA ================= -->
   <section class="cta">
@@ -409,8 +616,9 @@
   </section>
 
   <footer class="site-footer mono">
-    <!-- TODO: SWAP PLACEHOLDER — קרדיט/יצירת קשר סופיים -->
     <span>STUDIO DANIEL · עיצוב פנים</span>
+    <!-- TODO: SWAP PLACEHOLDER — טלפון אמיתי -->
+    <a href="tel:+972500000000" dir="ltr">050-000-0000</a>
     <span>EST. <span id="year"></span></span>
   </footer>
 
@@ -589,7 +797,7 @@
         keyword.className = "stage__keyword";
         keyword.textContent = ch.keyword;
 
-        // חתימה: מד חשיפה + spec
+        // חתימה: spec
         var foot = document.createElement("div");
         foot.className = "stage__foot";
         foot.innerHTML =
@@ -614,13 +822,12 @@
       });
     }
 
-    /* ---------- 5. opacity של מילת המפתח — פייד בשליש האמצעי ---------- */
+    /* ---------- 5. opacity של מילת המפתח — נכנסת באמצע ונשארת עד סוף הפרק ---------- */
     function keywordOpacity(p) {
-      var a = 0.30, b = 0.45, c = 0.60, d = 0.75;
-      if (p <= a || p >= d) return 0;
+      var a = 0.30, b = 0.45;
+      if (p <= a) return 0;
       if (p < b) return (p - a) / (b - a);
-      if (p <= c) return 1;
-      return 1 - (p - c) / (d - c);
+      return 1;
     }
 
     /* ---------- 6. רינדור פרק לפי מצב הגלילה ----------

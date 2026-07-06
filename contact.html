@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<!--
+  =====================================================================
+  סטודיו דניאל — צור קשר
+  הטופס פותח WhatsApp עם הודעה ממולאת (ללא backend).
+  להחלפת תוכן אמיתי: חפשו "TODO: SWAP PLACEHOLDER".
+  =====================================================================
+-->
+<html lang="he" dir="rtl">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="theme-color" content="#F5EFE4" />
+  <title>צור קשר — סטודיו דניאל | עיצוב פנים</title>
+  <meta name="description" content="דברו עם דניאל — וואטסאפ, טלפון או הודעה קצרה. נתחיל בשיחה על החדר שהכי מציק לכם." />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Assistant:wght@300;400;600;700&family=Frank+Ruhl+Libre:wght@500;700;900&family=Space+Mono:wght@400;700&display=swap"
+    rel="stylesheet"
+  />
+
+  <style>
+    /* ===== Design Tokens (זהים לכל העמודים) ===== */
+    :root {
+      --cream:      #F5EFE4;
+      --cream-2:    #EFE6D6;
+      --espresso:   #2E241B;
+      --plaster:    #E7DED0;
+      --brass:      #C9A24B;
+      --brass-deep: #A8843A;
+      --sand:       #8A7A63;
+      --line:       rgba(46,36,27,0.14);
+      --display: "Frank Ruhl Libre", "David Libre", Georgia, serif;
+      --body:    "Assistant", "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+      --mono:    "Space Mono", "SFMono-Regular", ui-monospace, Menlo, Consolas, monospace;
+      --nav-h: 58px;
+    }
+    *, *::before, *::after { box-sizing: border-box; }
+    html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
+    body {
+      margin: 0;
+      background: var(--cream);
+      color: var(--espresso);
+      font-family: var(--body);
+      line-height: 1.65;
+      overflow-x: hidden;
+      -webkit-font-smoothing: antialiased;
+      padding-top: var(--nav-h);
+    }
+    img { display: block; max-width: 100%; }
+    a { color: inherit; }
+    ::selection { background: var(--brass); color: #fff; }
+    .mono { font-family: var(--mono); font-size: 0.72rem; letter-spacing: 0.14em; text-transform: uppercase; }
+    body::after {
+      content: ""; position: fixed; inset: 0; z-index: 9; pointer-events: none;
+      opacity: 0.04; mix-blend-mode: multiply;
+      background-image: url("data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20width='160'%20height='160'%3E%3Cfilter%20id='n'%3E%3CfeTurbulence%20type='fractalNoise'%20baseFrequency='0.85'%20numOctaves='2'/%3E%3C/filter%3E%3Crect%20width='100%25'%20height='100%25'%20filter='url(%23n)'/%3E%3C/svg%3E");
+    }
+    a:focus-visible, button:focus-visible, input:focus-visible, textarea:focus-visible {
+      outline: 2px solid var(--brass-deep); outline-offset: 3px; border-radius: 2px;
+    }
+
+    /* ===== ניווט (זהה לכל העמודים) ===== */
+    .nav {
+      position: fixed; top: 0; inset-inline: 0; z-index: 20;
+      height: var(--nav-h);
+      display: flex; align-items: center; justify-content: space-between; gap: 12px;
+      padding: 0 22px;
+      background: rgba(245,239,228,0.86);
+      -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px);
+      border-bottom: 1px solid var(--line);
+    }
+    .nav__brand { font-family: var(--display); font-weight: 700; font-size: 1.05rem; text-decoration: none; color: var(--espresso); white-space: nowrap; }
+    .nav__brand .dot { color: var(--brass-deep); }
+    .nav__links { display: flex; align-items: center; gap: 4px; }
+    .nav__links a {
+      text-decoration: none; font-size: 0.95rem; font-weight: 600; color: var(--sand);
+      padding: 10px 10px; border-radius: 2px; transition: color .25s ease;
+    }
+    .nav__links a:hover { color: var(--espresso); }
+    .nav__links a[aria-current="page"] { color: var(--brass-deep); }
+    @media (min-width: 768px) { .nav { padding: 0 40px; } .nav__links { gap: 14px; } }
+
+    /* ===== כותרת עמוד ===== */
+    .page-head { padding: 64px 22px 30px; max-width: 860px; margin: 0 auto; }
+    .page-head__eyebrow { color: var(--brass-deep); margin: 0 0 14px; }
+    .page-head__title {
+      font-family: var(--display); font-weight: 900;
+      font-size: clamp(2.4rem, 10vw, 4.2rem); line-height: 1.02; margin: 0 0 14px;
+    }
+    .page-head__title em { font-style: normal; color: var(--brass-deep); }
+    .page-head__sub { color: var(--sand); max-width: 46ch; margin: 0; }
+
+    /* ===== ערוצים מהירים ===== */
+    .channels {
+      max-width: 860px; margin: 0 auto;
+      padding: 10px 22px 8px;
+      display: grid; gap: 14px;
+    }
+    @media (min-width: 640px) { .channels { grid-template-columns: repeat(3, 1fr); } }
+    .channel {
+      display: flex; align-items: center; gap: 12px;
+      padding: 18px 16px;
+      background: var(--cream-2);
+      border: 1px solid var(--line);
+      border-radius: 3px;
+      text-decoration: none;
+      transition: border-color .25s ease, transform .2s ease;
+    }
+    .channel:hover { border-color: var(--brass-deep); }
+    .channel:active { transform: translateY(1px); }
+    .channel svg { flex: none; color: var(--brass-deep); }
+    .channel__label { font-weight: 700; }
+    .channel__value { color: var(--sand); font-size: 0.9rem; }
+
+    /* ===== טופס ===== */
+    .form-wrap { max-width: 860px; margin: 0 auto; padding: 40px 22px 80px; }
+    .form-title {
+      font-family: var(--display); font-weight: 900;
+      font-size: clamp(1.6rem, 6.5vw, 2.2rem); margin: 0 0 8px;
+    }
+    .form-sub { color: var(--sand); margin: 0 0 28px; }
+    .field { margin-bottom: 20px; }
+    .field label { display: block; font-weight: 700; margin-bottom: 8px; }
+    .field input, .field textarea {
+      width: 100%;
+      padding: 14px 14px;
+      font: inherit;
+      font-size: 1rem; /* >=16px — מונע זום אוטומטי ב-iOS */
+      color: var(--espresso);
+      background: #fff;
+      border: 1px solid var(--line);
+      border-radius: 3px;
+      transition: border-color .25s ease;
+    }
+    .field input:focus, .field textarea:focus { border-color: var(--brass-deep); outline: none; }
+    .field textarea { min-height: 130px; resize: vertical; }
+    .field .hint { color: var(--sand); font-size: 0.85rem; margin-top: 6px; }
+    .btn {
+      display: inline-flex; align-items: center; gap: 12px;
+      padding: 15px 30px; font-family: var(--body); font-size: 1.02rem; font-weight: 700;
+      color: #fff; background: var(--brass-deep); border: 1px solid var(--brass-deep);
+      border-radius: 2px; text-decoration: none; cursor: pointer;
+      transition: background-color .3s ease, color .3s ease, transform .2s ease;
+    }
+    .btn:hover { background: var(--brass); border-color: var(--brass); color: var(--espresso); }
+    .btn:active { transform: translateY(1px); }
+
+    /* ===== Footer ===== */
+    .site-footer {
+      padding: 26px 22px calc(30px + env(safe-area-inset-bottom));
+      display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap;
+      color: var(--sand); border-top: 1px solid var(--line); background: var(--cream);
+    }
+    .site-footer a { color: var(--sand); text-decoration: none; }
+    .site-footer a:hover { color: var(--espresso); }
+
+    /* אנימציית כניסה עדינה */
+    .reveal { opacity: 0; transform: translateY(18px); animation: rise .8s cubic-bezier(.2,.7,.2,1) forwards; }
+    .reveal.d2 { animation-delay: .12s; }
+    .reveal.d3 { animation-delay: .24s; }
+    @keyframes rise { to { opacity: 1; transform: none; } }
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+      .reveal { animation: none; opacity: 1; transform: none; }
+    }
+  </style>
+</head>
+<body>
+
+  <nav class="nav" aria-label="ניווט ראשי">
+    <a class="nav__brand" href="index.html">סטודיו דניאל<span class="dot">.</span></a>
+    <div class="nav__links">
+      <a href="index.html">בית</a>
+      <a href="portfolio.html">פרויקטים</a>
+      <a href="about.html">אודות</a>
+      <a href="contact.html" aria-current="page">צור קשר</a>
+    </div>
+  </nav>
+
+  <header class="page-head">
+    <p class="page-head__eyebrow mono reveal">— צור קשר</p>
+    <h1 class="page-head__title reveal d2">בואו נתחיל<br /><em>בשיחה.</em></h1>
+    <p class="page-head__sub reveal d2">ספרו לי על החדר שהכי מציק לכם — ומשם נמשיך. בלי התחייבות, בלי לחץ.</p>
+  </header>
+
+  <main>
+    <!-- TODO: SWAP PLACEHOLDER — מספר וואטסאפ/טלפון/אינסטגרם אמיתיים בכל הקישורים בעמוד -->
+    <section class="channels reveal d3" aria-label="דרכי התקשרות">
+      <a class="channel" href="https://wa.me/972500000000?text=%D7%94%D7%99%D7%99%20%D7%93%D7%A0%D7%99%D7%90%D7%9C%2C%20%D7%A8%D7%90%D7%99%D7%AA%D7%99%20%D7%90%D7%AA%20%D7%94%D7%90%D7%AA%D7%A8%20%D7%95%D7%90%D7%A9%D7%9E%D7%97%20%D7%9C%D7%A9%D7%9E%D7%95%D7%A2%20%D7%A2%D7%95%D7%93" target="_blank" rel="noopener">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.75.46 3.45 1.32 4.95L2 22l5.25-1.38a9.9 9.9 0 0 0 4.79 1.22h.01c5.46 0 9.91-4.45 9.91-9.91C21.96 6.45 17.5 2 12.04 2zm0 18.02h-.01a8.2 8.2 0 0 1-4.19-1.15l-.3-.18-3.11.82.83-3.03-.2-.31a8.13 8.13 0 0 1-1.25-4.35c0-4.54 3.7-8.24 8.24-8.24 2.2 0 4.27.86 5.82 2.42a8.18 8.18 0 0 1 2.41 5.83c0 4.54-3.69 8.24-8.24 8.24zm4.52-6.16c-.25-.12-1.47-.72-1.69-.81-.23-.08-.39-.12-.56.13-.16.25-.64.81-.79.97-.14.17-.29.19-.54.06-.25-.12-1.05-.39-1.99-1.23-.74-.66-1.23-1.47-1.38-1.72-.14-.25-.02-.38.11-.51.11-.11.25-.29.37-.43.13-.14.17-.25.25-.41.08-.17.04-.31-.02-.43-.06-.12-.56-1.34-.76-1.84-.2-.48-.4-.42-.56-.43-.14-.01-.31-.01-.48-.01-.17 0-.43.06-.66.31-.23.25-.86.85-.86 2.07 0 1.22.89 2.4 1.01 2.56.12.17 1.75 2.67 4.25 3.74.59.26 1.06.41 1.42.53.6.19 1.14.16 1.57.1.48-.07 1.47-.6 1.68-1.18.21-.58.21-1.07.14-1.18-.06-.11-.22-.17-.47-.29z"/></svg>
+        <span>
+          <span class="channel__label">WhatsApp</span><br />
+          <span class="channel__value">הכי מהיר — עונה תוך יום</span>
+        </span>
+      </a>
+      <a class="channel" href="tel:+972500000000">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+        <span>
+          <span class="channel__label">טלפון</span><br />
+          <span class="channel__value" dir="ltr">050-000-0000</span>
+        </span>
+      </a>
+      <a class="channel" href="https://instagram.com/studio.daniel" target="_blank" rel="noopener">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4.2"/><circle cx="17.6" cy="6.4" r="1.1" fill="currentColor" stroke="none"/></svg>
+        <span>
+          <span class="channel__label">Instagram</span><br />
+          <span class="channel__value">@studio.daniel</span>
+        </span>
+      </a>
+    </section>
+
+    <section class="form-wrap">
+      <h2 class="form-title">או השאירו פרטים כאן</h2>
+      <p class="form-sub">ההודעה תיפתח בוואטסאפ — רק ללחוץ שליחה.</p>
+      <form id="contact-form" novalidate>
+        <div class="field">
+          <label for="f-name">שם מלא</label>
+          <input id="f-name" name="name" type="text" autocomplete="name" required />
+        </div>
+        <div class="field">
+          <label for="f-room">איזה חלל מציק לכם?</label>
+          <input id="f-room" name="room" type="text" placeholder="" />
+          <p class="hint">למשל: מטבח, סלון, כל הדירה…</p>
+        </div>
+        <div class="field">
+          <label for="f-msg">כמה מילים על מה שתרצו לשנות</label>
+          <textarea id="f-msg" name="message"></textarea>
+        </div>
+        <button class="btn" type="submit">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.75.46 3.45 1.32 4.95L2 22l5.25-1.38a9.9 9.9 0 0 0 4.79 1.22h.01c5.46 0 9.91-4.45 9.91-9.91C21.96 6.45 17.5 2 12.04 2z"/></svg>
+          שליחה בוואטסאפ
+        </button>
+      </form>
+    </section>
+  </main>
+
+  <footer class="site-footer mono">
+    <span>STUDIO DANIEL · עיצוב פנים</span>
+    <!-- TODO: SWAP PLACEHOLDER — טלפון אמיתי -->
+    <a href="tel:+972500000000" dir="ltr">050-000-0000</a>
+    <span>EST. <span id="year"></span></span>
+  </footer>
+
+  <script>
+    document.getElementById("year").textContent = new Date().getFullYear();
+
+    // הטופס בונה הודעת וואטסאפ ופותח אותה — ללא שרת.
+    // TODO: SWAP PLACEHOLDER — מספר וואטסאפ אמיתי גם כאן.
+    var WA_NUMBER = "972500000000";
+    document.getElementById("contact-form").addEventListener("submit", function (e) {
+      e.preventDefault();
+      var name = document.getElementById("f-name").value.trim();
+      var room = document.getElementById("f-room").value.trim();
+      var msg  = document.getElementById("f-msg").value.trim();
+      if (!name) { document.getElementById("f-name").focus(); return; }
+      var text = "היי דניאל, אני " + name + ".";
+      if (room) text += "\nהחלל שמציק לי: " + room + ".";
+      if (msg)  text += "\n" + msg;
+      text += "\n(הגעתי דרך האתר)";
+      window.open("https://wa.me/" + WA_NUMBER + "?text=" + encodeURIComponent(text), "_blank", "noopener");
+    });
+  </script>
+</body>
+</html>
