@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <!--
   =====================================================================
-  סטודיו דניאל — דף הבית (Scrollytelling לפני / אחרי)
+  סטודיו דניאל — דף הבית (גלריית לפני / אחרי)
   קונספט עיצובי: "בית מלא אור" — בהיר, חמים, אלגנטי.
   ---------------------------------------------------------------------
   קובץ בודד: HTML + CSS + JS inline. ללא build, ללא framework.
@@ -15,7 +15,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
   <meta name="theme-color" content="#F5EFE4" />
   <title>סטודיו דניאל — עיצוב פנים | כל חדר, מסופר מחדש</title>
-  <meta name="description" content="סטודיו דניאל — עיצוב פנים חם ומדויק. גללו וראו איך אור וחומר משנים חלל: מטבח, סלון, חדר שינה וחדר רחצה — מ׳לפני׳ ל׳אחרי׳." />
+  <meta name="description" content="סטודיו דניאל — עיצוב פנים חם ומדויק. מטבח, סלון, חדר שינה וחדר רחצה — מ׳לפני׳ ל׳אחרי׳." />
 
   <!-- ===== גופנים ===== -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -33,13 +33,10 @@
       --cream:      #F5EFE4;  /* רקע ראשי — שמנת חמימה */
       --cream-2:    #EFE6D6;  /* רקע משני / קלפים */
       --espresso:   #2E241B;  /* טקסט ראשי — חום כהה */
-      --espresso-d: #241C15;  /* במה כהה (פרקי התמונות) */
-      --plaster:    #E7DED0;  /* טקסט על גבי הבמה הכהה */
       --brass:      #C9A24B;  /* מבטא — פליז */
       --brass-deep: #A8843A;  /* פליז כהה (טקסט על בהיר, קונטרסט) */
       --sand:       #8A7A63;  /* טקסט משני חמים */
-      --line:       rgba(46,36,27,0.14);       /* קווי הפרדה על בהיר */
-      --line-dark:  rgba(231,222,208,0.16);    /* קווי הפרדה על כהה */
+      --line:       rgba(46,36,27,0.14);       /* קווי הפרדה */
 
       --stage-h: 100vh;
 
@@ -266,118 +263,36 @@
     @keyframes rise { to { opacity: 1; transform: none; } }
 
     /* =================================================================
-       5. פרק (Chapter) — מנגנון scroll-scrubbing (במה כהה בכוונה:
-          קונטרסט דרמטי לתמונות, בעוד שהעמוד סביבן בהיר)
+       5. חדרים — גלריית "לפני | אחרי" סטטית
        ================================================================= */
-    .chapter {
-      position: relative;
-      height: calc(var(--stage-h) * 3);
-    }
-    .stage {
-      position: sticky;
-      top: 0;
-      height: var(--stage-h);
-      overflow: hidden;
-      background: var(--espresso-d);
-    }
-    .frames { position: absolute; inset: 0; transform: scale(1.12); will-change: transform; }
-    .frame {
-      position: absolute;
-      inset: 0;
-      background-position: center;
-      background-size: cover;
-      background-repeat: no-repeat;
-      will-change: opacity;
-      opacity: 0;
-    }
-    .stage__scrim {
-      position: absolute; inset: 0; pointer-events: none;
-      background:
-        linear-gradient(180deg, rgba(36,28,21,0.72) 0%, rgba(36,28,21,0) 24%, rgba(36,28,21,0) 52%, rgba(36,28,21,0.86) 100%),
-        radial-gradient(120% 80% at 50% 40%, transparent 55%, rgba(36,28,21,0.4) 100%);
-    }
-    .stage__top {
-      position: absolute;
-      top: calc(var(--nav-h) + 16px + env(safe-area-inset-top));
-      inset-inline: 22px;
-      display: flex;
-      align-items: baseline;
-      justify-content: space-between;
-      gap: 12px;
-      z-index: 3;
-    }
-    .stage__index { color: var(--brass); }
-    .stage__room {
-      font-family: var(--display);
-      font-weight: 700;
-      font-size: clamp(1.5rem, 6.4vw, 2.4rem);
-      color: var(--plaster);
-      text-shadow: 0 2px 18px rgba(0,0,0,0.45);
-    }
-    .stage__keyword {
-      position: absolute;
-      inset-inline: 24px;
-      top: 50%;
-      transform: translateY(-50%);
-      margin: 0;
-      font-family: var(--display);
-      font-weight: 900;
-      font-size: clamp(2.6rem, 13vw, 5.5rem);
-      line-height: 1.02;
-      color: var(--plaster);
-      text-shadow: 0 6px 30px rgba(0,0,0,0.55);
-      opacity: 0;
-      z-index: 2;
-    }
-    .stage__keyword::before {
-      content: "";
-      display: block;
-      width: 40px; height: 3px;
-      background: var(--brass);
-      margin-bottom: 18px;
-    }
-    .stage__foot {
-      position: absolute;
-      inset-inline: 22px;
-      bottom: calc(24px + env(safe-area-inset-bottom));
-      z-index: 3;
-    }
-    .stage__spec {
-      display: inline-flex; align-items: center; gap: 10px;
-      color: var(--plaster); letter-spacing: 0.16em; font-size: 0.74rem;
-      text-shadow: 0 2px 14px rgba(0,0,0,0.5);
-    }
-    .spec-tick { width: 22px; height: 1px; background: var(--brass); display: inline-block; flex: none; }
-
-    /* =================================================================
-       6. Fallback — prefers-reduced-motion: "לפני | אחרי" סטטי
-       ================================================================= */
-    .static-chapter { padding: 46px 20px; border-bottom: 1px solid var(--line); }
-    .static-chapter__head {
+    .room { padding: 46px 20px; border-bottom: 1px solid var(--line); }
+    .room__head {
       display: flex; align-items: baseline; gap: 12px;
       max-width: 1100px; margin: 0 auto 18px;
     }
-    .static-chapter__index { color: var(--brass-deep); }
-    .static-chapter__name {
+    .room__index { color: var(--brass-deep); }
+    .room__name {
       font-family: var(--display); font-weight: 700;
       font-size: clamp(1.7rem, 7vw, 2.6rem); margin: 0;
     }
-    .static-chapter__kw { color: var(--sand); margin-inline-start: auto; }
-    .static-pair {
+    .room__kw { color: var(--sand); margin-inline-start: auto; text-align: left; }
+    .room__pair {
       display: grid; grid-template-columns: 1fr 1fr; gap: 12px;
       max-width: 1100px; margin: 0 auto;
     }
-    .static-figure { margin: 0; }
-    .static-figure img {
-      width: 100%; aspect-ratio: 2/3; object-fit: cover;
+    .room__figure { margin: 0; }
+    .room__figure img {
+      width: 100%; aspect-ratio: 4/5; object-fit: cover;
       border-radius: 3px; border: 1px solid var(--line);
     }
-    .static-figure figcaption { margin-top: 8px; text-align: center; color: var(--sand); font-family: var(--mono); font-size: 0.72rem; letter-spacing: 0.12em; }
-    @media (max-width: 420px) { .static-pair { grid-template-columns: 1fr; } }
+    .room__figure figcaption { margin-top: 8px; text-align: center; color: var(--sand); font-family: var(--mono); font-size: 0.72rem; letter-spacing: 0.12em; }
+    .room__spec { max-width: 1100px; margin: 16px auto 0; color: var(--sand); display: flex; align-items: center; gap: 10px; letter-spacing: 0.14em; }
+    .spec-tick { width: 22px; height: 1px; background: var(--brass-deep); display: inline-block; flex: none; }
+    @media (max-width: 420px) { .room__pair { grid-template-columns: 1fr; } }
+    @media (min-width: 768px) { .room { padding: 60px 40px; } }
 
     @media (prefers-reduced-motion: reduce) {
       html { scroll-behavior: auto; }
-      .stage { position: static; height: auto; }
       .hero__foot .cue, .reveal, .hero__media img { animation: none; }
       .reveal { opacity: 1; transform: none; }
     }
@@ -480,17 +395,12 @@
     @media (min-width: 768px) {
       .hero { padding-inline: 48px; }
       .hero__subtitle { font-size: 1.35rem; }
-      .stage__top { inset-inline: 40px; }
-      .stage__foot { inset-inline: 40px; bottom: 34px; }
-      .stage__keyword { inset-inline: 40px; }
     }
     @media (min-width: 1000px) {
       .hero { padding-inline: 64px; }
       .hero__title { font-size: clamp(5rem, 9vw, 8rem); }
       .hero__subtitle { max-width: 40ch; }
     }
-
-    .noscript { padding: 18px; text-align: center; background: var(--brass); color: var(--espresso); }
   </style>
 </head>
 <body>
@@ -512,9 +422,9 @@
     <div class="hero__text">
       <p class="hero__eyebrow mono reveal d1"><span class="tick"></span> STUDIO DANIEL · עיצוב פנים</p>
       <h1 class="hero__title reveal d2">כל חדר,<br /><em>מסופר מחדש.</em></h1>
-      <p class="hero__subtitle reveal d3">גללו וראו איך אור וחומר משנים חלל — מ׳לפני׳ ל׳אחרי׳, בתנועה אחת.</p>
+      <p class="hero__subtitle reveal d3">גללו וראו איך אור וחומר משנים חלל — מטבח, סלון, חדר שינה וחדר רחצה, לפני ואחרי.</p>
       <div class="reveal d4">
-        <a class="btn" href="#chapter-kitchen">לסיור בין החדרים ↓</a>
+        <a class="btn" href="#room-kitchen">לסיור בין החדרים ↓</a>
       </div>
     </div>
 
@@ -532,12 +442,85 @@
     </div>
   </header>
 
-  <noscript>
-    <p class="noscript">להצגת אפקט הטרנספורמציה יש לאפשר JavaScript בדפדפן.</p>
-  </noscript>
+  <!-- ================= חדרים — לפני / אחרי ================= -->
+  <!-- TODO: SWAP PLACEHOLDER — להחליף כל זוג תמונות (לפני/אחרי) בתמונות אמיתיות מפרויקטי דניאל -->
+  <main>
+    <section class="room" id="room-kitchen" aria-labelledby="room-kitchen-name">
+      <div class="room__head">
+        <span class="room__index mono">01 / 04</span>
+        <h2 class="room__name" id="room-kitchen-name">מטבח</h2>
+        <span class="room__kw mono">מרחב שנפתח</span>
+      </div>
+      <div class="room__pair">
+        <figure class="room__figure">
+          <img src="https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?auto=format&fit=crop&w=900&h=1125&q=72&sat=-100&bri=-12" alt="לפני – מטבח" loading="lazy" />
+          <figcaption class="mono">לפני</figcaption>
+        </figure>
+        <figure class="room__figure">
+          <img src="https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?auto=format&fit=crop&w=900&h=1125&q=72" alt="אחרי – מטבח" loading="lazy" />
+          <figcaption class="mono">אחרי</figcaption>
+        </figure>
+      </div>
+      <p class="room__spec mono"><span class="spec-tick"></span>אור · חום · זרימה</p>
+    </section>
 
-  <!-- ================= הפרקים מוזרקים לכאן ע"י JS ================= -->
-  <main id="chapters"></main>
+    <section class="room" id="room-living" aria-labelledby="room-living-name">
+      <div class="room__head">
+        <span class="room__index mono">02 / 04</span>
+        <h2 class="room__name" id="room-living-name">סלון</h2>
+        <span class="room__kw mono">אור שנכנס</span>
+      </div>
+      <div class="room__pair">
+        <figure class="room__figure">
+          <img src="https://images.unsplash.com/photo-1586023492125-27b2c045efd7?auto=format&fit=crop&w=900&h=1125&q=72&sat=-100&bri=-12" alt="לפני – סלון" loading="lazy" />
+          <figcaption class="mono">לפני</figcaption>
+        </figure>
+        <figure class="room__figure">
+          <img src="https://images.unsplash.com/photo-1586023492125-27b2c045efd7?auto=format&fit=crop&w=900&h=1125&q=72" alt="אחרי – סלון" loading="lazy" />
+          <figcaption class="mono">אחרי</figcaption>
+        </figure>
+      </div>
+      <p class="room__spec mono"><span class="spec-tick"></span>אוויר · מרקם · שקט</p>
+    </section>
+
+    <section class="room" id="room-bedroom" aria-labelledby="room-bedroom-name">
+      <div class="room__head">
+        <span class="room__index mono">03 / 04</span>
+        <h2 class="room__name" id="room-bedroom-name">חדר שינה</h2>
+        <span class="room__kw mono">שקט חדש</span>
+      </div>
+      <div class="room__pair">
+        <figure class="room__figure">
+          <img src="https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?auto=format&fit=crop&w=900&h=1125&q=72&sat=-100&bri=-12" alt="לפני – חדר שינה" loading="lazy" />
+          <figcaption class="mono">לפני</figcaption>
+        </figure>
+        <figure class="room__figure">
+          <img src="https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?auto=format&fit=crop&w=900&h=1125&q=72" alt="אחרי – חדר שינה" loading="lazy" />
+          <figcaption class="mono">אחרי</figcaption>
+        </figure>
+      </div>
+      <p class="room__spec mono"><span class="spec-tick"></span>רכות · צל · רוגע</p>
+    </section>
+
+    <section class="room" id="room-bathroom" aria-labelledby="room-bathroom-name" style="border-bottom:none;">
+      <div class="room__head">
+        <span class="room__index mono">04 / 04</span>
+        <h2 class="room__name" id="room-bathroom-name">חדר רחצה</h2>
+        <span class="room__kw mono">נקי ומרגיע</span>
+      </div>
+      <div class="room__pair">
+        <figure class="room__figure">
+          <img src="https://images.unsplash.com/photo-1620626011761-996317b8d101?auto=format&fit=crop&w=900&h=1125&q=72&sat=-100&bri=-12" alt="לפני – חדר רחצה" loading="lazy" />
+          <figcaption class="mono">לפני</figcaption>
+        </figure>
+        <figure class="room__figure">
+          <img src="https://images.unsplash.com/photo-1620626011761-996317b8d101?auto=format&fit=crop&w=900&h=1125&q=72" alt="אחרי – חדר רחצה" loading="lazy" />
+          <figcaption class="mono">אחרי</figcaption>
+        </figure>
+      </div>
+      <p class="room__spec mono"><span class="spec-tick"></span>אבן · אור · רעננות</p>
+    </section>
+  </main>
 
   <!-- ================= פרויקטים נבחרים ================= -->
   <section class="projects" aria-labelledby="projects-title">
@@ -622,309 +605,6 @@
     <span>EST. <span id="year"></span></span>
   </footer>
 
-  <script>
-  /* ===================================================================
-     JavaScript — כל הלוגיקה (vanilla, ללא תלויות)
-     =================================================================== */
-  (function () {
-    "use strict";
-
-    /* ---------- 0. עזרי בסיס ---------- */
-    function clamp(v, min, max) { return v < min ? min : (v > max ? max : v); }
-    function escapeXml(s) {
-      return String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;")
-                      .replace(/"/g,"&quot;").replace(/'/g,"&apos;");
-    }
-
-    /* ---------- 1. Fallback: מחולל placeholder (SVG) — נשמר לשעת חירום ----------
-       אם תרצו לחזור ל-placeholders במקום תמונות אמיתיות, השתמשו בפונקציה
-       הזו במערך frames במקום roomPhoto. // TODO: SWAP PLACEHOLDER */
-    function makePlaceholder(roomName, phase, colorA, colorB) {
-      var isBefore = phase === "before";
-      var label = (isBefore ? "לפני" : "אחרי") + " – " + roomName;
-      var svg =
-        '<svg xmlns="http://www.w3.org/2000/svg" width="800" height="1200" viewBox="0 0 800 1200" direction="rtl">' +
-          '<defs><linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">' +
-          '<stop offset="0" stop-color="'+colorA+'"/><stop offset="1" stop-color="'+colorB+'"/>' +
-          '</linearGradient></defs>' +
-          '<rect width="800" height="1200" fill="url(#bg)"/>' +
-          '<text x="400" y="600" text-anchor="middle" font-family="Arial" font-size="76" font-weight="700" fill="#fff">'+escapeXml(label)+'</text>' +
-          '<text x="400" y="1140" text-anchor="middle" font-family="Arial" font-size="26" fill="#fff" opacity="0.55">// TODO: SWAP PLACEHOLDER</text>' +
-        '</svg>';
-      return "data:image/svg+xml;charset=utf-8," + encodeURIComponent(svg);
-    }
-
-    /* ---------- 1b. תמונת חדר אמיתית (Unsplash) — "לפני"/"אחרי" ----------
-       "before" = אותה תמונה, מנוטרלת צבע ומעומעמת (מראה מיושן/דהוי);
-       "after"  = צבע מלא וחי. הקרוספייד מדגים "שדרוג" של אותו חדר.
-       *** TODO: SWAP PLACEHOLDER *** — החליפו מזהי תמונות ב-CHAPTERS,
-       או הציבו כתובות משלכם ישירות במערך frames. */
-    var UNSPLASH = "https://images.unsplash.com/";
-    function roomPhoto(photoId, phase) {
-      var base = UNSPLASH + photoId + "?auto=format&fit=crop&w=1080&h=1620&q=72";
-      return phase === "before" ? base + "&sat=-100&bri=-12" : base;
-    }
-
-    /* ---------- 1c. רצף פריימים אמיתי מווידאו (Image Sequence) ----------
-       זה ה"סגנון של הריל": וידאו AI שפורק לפריימים וגוללים דרכו.
-       השתמשו כך במקום זוג roomPhoto (ראו דוגמה מוערת ב-CHAPTERS):
-           frames: sequence("kitchen", 30)
-       בונה: ["frames/kitchen/frame-001.jpg", ..., "frame-030.jpg"].
-       מפיקים את הפריימים עם הסקריפט scripts/extract-frames (ffmpeg) —
-       ראו README.md. כשהמערך גדול מ-2, אפקט ה-Ken Burns נכבה אוטומטית
-       (התנועה כבר בתוך הפריימים). // TODO: SWAP PLACEHOLDER */
-    function sequence(room, count, ext) {
-      ext = ext || "jpg";
-      var arr = [];
-      for (var i = 1; i <= count; i++) {
-        arr.push("frames/" + room + "/frame-" + String(i).padStart(3, "0") + "." + ext);
-      }
-      return arr;
-    }
-
-    /* ---------- 2. נתוני הפרקים ----------
-       כל פרק מחזיק מערך `frames` (לא שתי תמונות קבועות). המנגנון גנרי:
-       2 פריימים = קרוספייד לפני→אחרי; 20–40 פריימים = רצף וידאו חלק.
-       *** רק מאריכים/מחליפים את frames — אפס שינוי לוגיקה. *** */
-    var CHAPTERS = [
-      {
-        id: "kitchen", index: "01", name: "מטבח",
-        keyword: "מרחב שנפתח", spec: "אור · חום · זרימה",
-        // TODO: SWAP PLACEHOLDER — CHAPTERS[0].frames (מטבח).
-        // כשיהיה וידאו AI: מחליפים את השורות למטה בשורה אחת (רצף אמיתי):
-        //   frames: sequence("kitchen", 30)
-        frames: [
-          roomPhoto("photo-1556909114-f6e7ad7d3136", "before"),
-          roomPhoto("photo-1556909114-f6e7ad7d3136", "after")
-        ]
-      },
-      {
-        id: "living", index: "02", name: "סלון",
-        keyword: "אור שנכנס", spec: "אוויר · מרקם · שקט",
-        // TODO: SWAP PLACEHOLDER — CHAPTERS[1].frames (סלון).
-        // כשיהיה וידאו:  frames: sequence("living", 30)
-        frames: [
-          roomPhoto("photo-1586023492125-27b2c045efd7", "before"),
-          roomPhoto("photo-1586023492125-27b2c045efd7", "after")
-        ]
-      },
-      {
-        id: "bedroom", index: "03", name: "חדר שינה",
-        keyword: "שקט חדש", spec: "רכות · צל · רוגע",
-        // TODO: SWAP PLACEHOLDER — CHAPTERS[2].frames (חדר שינה).
-        // כשיהיה וידאו:  frames: sequence("bedroom", 30)
-        frames: [
-          roomPhoto("photo-1505693416388-ac5ce068fe85", "before"),
-          roomPhoto("photo-1505693416388-ac5ce068fe85", "after")
-        ]
-      },
-      {
-        id: "bathroom", index: "04", name: "חדר רחצה",
-        keyword: "נקי ומרגיע", spec: "אבן · אור · רעננות",
-        // TODO: SWAP PLACEHOLDER — CHAPTERS[3].frames (חדר רחצה).
-        // כשיהיה וידאו:  frames: sequence("bathroom", 30)
-        frames: [
-          roomPhoto("photo-1620626011761-996317b8d101", "before"),
-          roomPhoto("photo-1620626011761-996317b8d101", "after")
-        ]
-      }
-    ];
-
-    /* ---------- 3. זיהוי "פחות תנועה" ---------- */
-    var reduceMotionMQ = window.matchMedia("(prefers-reduced-motion: reduce)");
-    var prefersReducedMotion = reduceMotionMQ.matches;
-    var container = document.getElementById("chapters");
-
-    /* ---------- 4a. בנייה סטטית (Fallback) — "לפני | אחרי" ---------- */
-    function buildStatic() {
-      CHAPTERS.forEach(function (ch) {
-        var firstSrc = ch.frames[0], lastSrc = ch.frames[ch.frames.length - 1];
-        var section = document.createElement("section");
-        section.className = "static-chapter";
-        section.id = "chapter-" + ch.id;
-        section.innerHTML =
-          '<div class="static-chapter__head">' +
-            '<span class="static-chapter__index mono">' + ch.index + '</span>' +
-            '<h2 class="static-chapter__name">' + escapeXml(ch.name) + '</h2>' +
-            '<span class="static-chapter__kw">' + escapeXml(ch.keyword) + '</span>' +
-          '</div>' +
-          '<div class="static-pair">' +
-            '<figure class="static-figure"><img src="' + firstSrc + '" alt="לפני – ' + escapeXml(ch.name) + '" loading="lazy"><figcaption>לפני</figcaption></figure>' +
-            '<figure class="static-figure"><img src="' + lastSrc + '" alt="אחרי – ' + escapeXml(ch.name) + '" loading="lazy"><figcaption>אחרי</figcaption></figure>' +
-          '</div>';
-        container.appendChild(section);
-      });
-    }
-
-    /* ---------- 4b. בנייה עם scroll-scrubbing ---------- */
-    var stages = [];
-    function buildScrub() {
-      CHAPTERS.forEach(function (ch, idx) {
-        var section = document.createElement("section");
-        section.className = "chapter";
-        section.id = "chapter-" + ch.id;
-        section.setAttribute("aria-label", "טרנספורמציה של " + ch.name + " — מלפני לאחרי בגלילה");
-
-        var stage = document.createElement("div");
-        stage.className = "stage";
-
-        // שכבות התמונה (סדר DOM = סדר ציור: אחרון מעל)
-        var framesWrap = document.createElement("div");
-        framesWrap.className = "frames";
-        var frameEls = [];
-        ch.frames.forEach(function (src) {
-          var f = document.createElement("div");
-          f.className = "frame";
-          // טעינה עצלה: שומרים את המקור ומחילים כשהפרק מתקרב (חשוב לרצף 30+ פריימים)
-          f.setAttribute("data-src", src);
-          f.setAttribute("aria-hidden", "true");
-          framesWrap.appendChild(f);
-          frameEls.push(f);
-        });
-
-        var scrim = document.createElement("div");
-        scrim.className = "stage__scrim";
-
-        // ראש הפרק: אינדקס + שם
-        var top = document.createElement("div");
-        top.className = "stage__top";
-        top.innerHTML =
-          '<span class="stage__index mono">' + ch.index + ' / 04</span>' +
-          '<span class="stage__room">' + escapeXml(ch.name) + '</span>';
-
-        // מילת המפתח
-        var keyword = document.createElement("p");
-        keyword.className = "stage__keyword";
-        keyword.textContent = ch.keyword;
-
-        // חתימה: spec
-        var foot = document.createElement("div");
-        foot.className = "stage__foot";
-        foot.innerHTML =
-          '<span class="stage__spec mono"><span class="spec-tick"></span>' + escapeXml(ch.spec) + '</span>';
-
-        stage.appendChild(framesWrap);
-        stage.appendChild(scrim);
-        stage.appendChild(top);
-        stage.appendChild(keyword);
-        stage.appendChild(foot);
-        section.appendChild(stage);
-        container.appendChild(section);
-
-        stages.push({
-          section: section, stage: stage, frameEls: frameEls,
-          framesWrap: framesWrap, idx: idx,
-          // Ken Burns פעיל רק בזוג תמונות; ברצף אמיתי (>2) התנועה כבר בפריימים
-          kenBurns: frameEls.length <= 2,
-          keywordEl: keyword,
-          active: false, loaded: false
-        });
-      });
-    }
-
-    /* ---------- 5. opacity של מילת המפתח — נכנסת באמצע ונשארת עד סוף הפרק ---------- */
-    function keywordOpacity(p) {
-      var a = 0.30, b = 0.45;
-      if (p <= a) return 0;
-      if (p < b) return (p - a) / (b - a);
-      return 1;
-    }
-
-    /* ---------- 6. רינדור פרק לפי מצב הגלילה ----------
-       floatIndex = progress*(N-1); שכבה תחתונה=1, עליונה=frac, השאר=0. */
-    function renderStage(item) {
-      var rect = item.section.getBoundingClientRect();
-      var scrollable = item.section.offsetHeight - item.stage.offsetHeight;
-      if (scrollable <= 0) return;
-      var p = clamp(-rect.top / scrollable, 0, 1);
-
-      var N = item.frameEls.length;
-      var floatIndex = p * (N - 1);
-      var lower = Math.floor(floatIndex);
-      var upper = Math.min(lower + 1, N - 1);
-      var frac = floatIndex - lower;
-      for (var i = 0; i < N; i++) {
-        var op = 0;
-        if (i === lower) op = 1;
-        else if (i === upper) op = frac;
-        item.frameEls[i].style.opacity = op;
-      }
-
-      // תנועת Ken Burns — זום + pan עדין לפי הגלילה (תחושת וידאו)
-      if (item.kenBurns && item.framesWrap) {
-        var s = 1.12 + p * 0.05;                       // 1.12 -> 1.17 (זום פנימה)
-        var dir = item.idx % 2 === 0 ? 1 : -1;         // כיוון מתחלף בין פרקים
-        var px = (0.5 - p) * 4 * dir;                  // ±2% pan אופקי
-        var py = (0.5 - p) * 2;                        // ±1% pan אנכי
-        item.framesWrap.style.transform =
-          "scale(" + s + ") translate(" + px + "%," + py + "%)";
-      }
-
-      var kop = keywordOpacity(p);
-      item.keywordEl.style.opacity = kop;
-      item.keywordEl.style.transform = "translateY(calc(-50% + " + ((1 - kop) * 16) + "px))";
-
-    }
-
-    /* ---------- 6b. טעינה עצלה של פריימים (פעם אחת לכל פרק) ----------
-       מחיל את התמונות רק כשהפרק קרוב למסך => עמוד קל בטעינה גם עם 30+
-       פריימים לכל חדר (הרצף האמיתי). מגדיל preload מסך אחד קדימה. */
-    function loadFrames(item) {
-      if (item.loaded) return;
-      item.loaded = true;
-      for (var i = 0; i < item.frameEls.length; i++) {
-        var f = item.frameEls[i];
-        var src = f.getAttribute("data-src");
-        if (src) f.style.backgroundImage = 'url("' + src + '")';
-      }
-    }
-
-    /* ---------- 7. לולאת עדכון: scroll -> rAF ---------- */
-    var ticking = false;
-    function requestUpdate() {
-      if (!ticking) { ticking = true; window.requestAnimationFrame(runUpdate); }
-    }
-    function runUpdate() {
-      ticking = false;
-      for (var i = 0; i < stages.length; i++) if (stages[i].active) renderStage(stages[i]);
-    }
-
-    /* ---------- 8. IntersectionObserver — מסמן פרקים פעילים ---------- */
-    function observeStages() {
-      var io = new IntersectionObserver(function (entries) {
-        entries.forEach(function (entry) {
-          for (var i = 0; i < stages.length; i++) {
-            if (stages[i].section === entry.target) {
-              stages[i].active = entry.isIntersecting;
-              if (entry.isIntersecting) loadFrames(stages[i]); // preload מסך קדימה
-              break;
-            }
-          }
-        });
-        requestUpdate();
-      }, { rootMargin: "100% 0px 100% 0px", threshold: 0 });
-      stages.forEach(function (s) { io.observe(s.section); });
-    }
-
-    /* ---------- 9. אתחול ---------- */
-    function init() {
-      document.getElementById("year").textContent = new Date().getFullYear();
-      if (prefersReducedMotion) { buildStatic(); return; }
-      buildScrub();
-      observeStages();
-      // מסך ראשון מיידי: טוענים ומפעילים את הפרק הראשון בלי לחכות ל-observer
-      if (stages[0]) { loadFrames(stages[0]); stages[0].active = true; }
-      window.addEventListener("scroll", requestUpdate, { passive: true });
-      window.addEventListener("resize", requestUpdate, { passive: true });
-      requestUpdate(); // רינדור ראשוני
-    }
-
-    if (reduceMotionMQ.addEventListener) {
-      reduceMotionMQ.addEventListener("change", function () { location.reload(); });
-    }
-    if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", init);
-    else init();
-  })();
-  </script>
+  <script>document.getElementById("year").textContent = new Date().getFullYear();</script>
 </body>
 </html>
